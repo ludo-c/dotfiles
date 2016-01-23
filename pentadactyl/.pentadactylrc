@@ -1,0 +1,16 @@
+"hg7226
+
+" http://nakkaya.com/2014/01/26/pentadactyl-configuration/
+"set scrollsteps=1 " Pourquoi vu qu'on mets 9 après ?
+set scrolltime=0
+
+loadplugins '\.(js|penta)$'
+group user
+set cdpath=''
+
+map -b j 8j
+map -b k 8k
+map -b h 8h
+map -b l 8l
+
+" vim: set ft=pentadactyl:
