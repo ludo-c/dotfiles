@@ -62,11 +62,8 @@ URxvt.color15 : #EEEEEC
 
 !URxvt.keysym.C-k:       echo -ne '\\033c'\n
 
-! extension tab. 
-!URxvt.perl-ext: tabbed
-
 ! https://github.com/muennich/urxvt-perls
-URxvt.perl-ext-common: default,url-select,keyboard-select,clipboard,tabbedex
+URxvt.perl-ext-common: default,perls/url-select,perls/keyboard-select,perls/clipboard,tabbedex/tabbedex
 ! url-select
 URxvt.keysym.M-u: perl:url-select:select_next
 URxvt.url-select.underline: true
@@ -78,7 +75,7 @@ URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
 ! extension copy
 URxvt.keysym.M-Escape: perl:keyboard-select:activate
 URxvt.keysym.M-s: perl:keyboard-select:search
-! tabbedrx https://wiki.archlinux.org/index.php/Rxvt-unicode
+! tabbedex https://wiki.archlinux.org/index.php/Rxvt-unicode#Advanced_tab_management
 URxvt.tabbed.autohide: true
 !URxvt.tabbed.reopen-on-close: yes
 URxvt.keysym.Control-t: perl:tabbedex:new_tab
