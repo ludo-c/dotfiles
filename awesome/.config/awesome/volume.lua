@@ -6,6 +6,10 @@
 
 local awful = require("awful")
 require("autostart")
+-- Get the sink index. https://wiki.archlinux.org/index.php/PulseAudio/Examples
+local fd = io.popen("pacmd list-sinks | grep '* index' | awk '{print $3}'")
+local sink = tonumber(fd:read("*all"))
+fd:close()
 
 -- Color constants
 local normal_color = '#33cc33'
@@ -16,14 +20,14 @@ local background_over_100_color = normal_color
 
 -- Functions to fetch volume information (pulseaudio)
 function get_volume() -- returns the volume as a float (1.0 = 100%)
-    local fd = io.popen("pactl list | grep -A 9001 'Sink #1' | grep Volume | head -n 1 | awk -F / '{print $2}' | sed 's/[^0-9]*//g'")
+    local fd = io.popen("pactl list | grep -A 9001 'Sink #".. sink .."' | grep Volume | head -n 1 | awk -F / '{print $2}' | sed 's/[^0-9]*//g'")
     local volume_str = fd:read("*all")
     fd:close()
     return tonumber(volume_str) / 100
 end
 
 function get_mute() -- returns a true value if muted or a false value if not
-    fd = io.popen("pactl list | grep -A 9001 'Sink #1' | grep Mute | head -n 1")
+    fd = io.popen("pactl list | grep -A 9001 'Sink #".. sink .."' | grep Mute | head -n 1")
     local mute_str = fd:read("*all")
     fd:close()
     return string.find(mute_str, "yes")
@@ -53,17 +57,17 @@ end
 -- Volume control functions for external use
 function inc_volume(widget)
     -- awful.util.spawn("amixer -D pulse set Master 5%+") 
-    awful.util.spawn("pactl set-sink-volume 1 +3%", false)
+    awful.util.spawn("pactl set-sink-volume ".. sink .." +3%", false)
     update_volume(widget)
 end
 
 function dec_volume(widget)
-    awful.util.spawn("pactl set-sink-volume 1 -3%", false)
+    awful.util.spawn("pactl set-sink-volume ".. sink .." -3%", false)
     update_volume(widget)
 end
 
 function mute_volume(widget)
-    awful.util.spawn("pactl set-sink-mute 1 toggle", false)
+    awful.util.spawn("pactl set-sink-mute ".. sink .." toggle", false)
     update_volume(widget)
 end
 
