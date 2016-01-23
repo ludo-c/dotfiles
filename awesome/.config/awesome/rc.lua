@@ -339,7 +339,12 @@ globalkeys = awful.util.table.join(
 
     awful.key({ }, "XF86AudioRaiseVolume", function () inc_volume(volume_widget) end),
     awful.key({ }, "XF86AudioLowerVolume", function () dec_volume(volume_widget) end),
-    awful.key({ }, "XF86AudioMute", function() mute_volume(volume_widget) end),
+    awful.key({ }, "XF86AudioMute", function () mute_volume(volume_widget) end),
+    awful.key({ }, "XF86AudioPrev", function () awful.util.spawn("qdbus org.mpris.clementine /Player org.freedesktop.MediaPlayer.Prev") end),
+    awful.key({ }, "XF86AudioStop", function () awful.util.spawn("qdbus org.mpris.clementine /Player org.freedesktop.MediaPlayer.Stop") end),
+    -- pause toggle between play and pause
+    awful.key({ }, "XF86AudioPlay", function () awful.util.spawn("qdbus org.mpris.clementine /Player org.freedesktop.MediaPlayer.Pause") end),
+    awful.key({ }, "XF86AudioNext", function () awful.util.spawn("qdbus org.mpris.clementine /Player org.freedesktop.MediaPlayer.Next") end),
 
     awful.key({ modkey, "Shift"   }, "i", function () awful.util.spawn("firefox -P proxy") end),
     awful.key({ modkey,           }, "i", function () awful.util.spawn("firefox -P default") end),
