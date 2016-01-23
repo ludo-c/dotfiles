@@ -120,18 +120,20 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
 
--- http://askubuntu.com/questions/611350/need-battery-applet-for-awesome-wm-and-ubuntu-14-04
-local batterywidget = wibox.widget.textbox()    
-batterywidget:set_text(" | Battery | ")    
-batterywidgettimer = timer({ timeout = 15 })    
-batterywidgettimer:connect_signal("timeout",    
-  function()    
-    fh = assert(io.popen("acpi | cut -d, -f 2,3 - | tr -d ',' | tr -d 'remaining'", "r"))    
-    batterywidget:set_text(" |" .. fh:read("*l") .. " | ")    
-    fh:close()    
-  end    
-)    
-batterywidgettimer:start()
+if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
+    -- http://askubuntu.com/questions/611350/need-battery-applet-for-awesome-wm-and-ubuntu-14-04
+    batterywidget = wibox.widget.textbox()
+    batterywidget:set_text(" | Battery | ")
+    batterywidgettimer = timer({ timeout = 15 })
+    batterywidgettimer:connect_signal("timeout",
+      function()
+        fh = assert(io.popen("acpi | cut -d, -f 2,3 - | tr -d ',' | tr -d 'remaining'", "r"))
+        batterywidget:set_text(" |" .. fh:read("*l") .. " | ")
+        fh:close()
+      end
+    )
+    batterywidgettimer:start()
+end
 
 -- proxy socks status
 local socks_widget = wibox.widget.textbox()    
@@ -242,7 +244,9 @@ for s = 1, screen.count() do
     local right_layout = wibox.layout.fixed.horizontal()
     right_layout:add(socks_widget)
     right_layout:add(memwidget)
-    right_layout:add(batterywidget)
+    if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
+        right_layout:add(batterywidget)
+    end
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
