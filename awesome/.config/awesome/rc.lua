@@ -13,9 +13,10 @@ local menubar = require("menubar")
 
 -- Load Debian menu entries
 require("debian.menu")
-require("autostart")
+
 -- start pulseaudio if not already started (before require "volume")
-run_once("pulseaudio --start")
+os.execute("pulseaudio --start")
+require("autostart")
 require("volume")
 require("lfs")
 require("vicious")
