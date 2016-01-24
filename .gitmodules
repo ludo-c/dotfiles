@@ -3,4 +3,4 @@
 	url = https://github.com/muennich/urxvt-perls.git
 [submodule "urxvt/.urxvt/ext/tabbedex"]
 	path = urxvt/.urxvt/ext/tabbedex
-	url = https://github.com/stepb/urxvt-tabbedex.git
+	url = https://github.com/mina86/urxvt-tabbedex.git
