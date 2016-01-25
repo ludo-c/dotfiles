@@ -145,6 +145,9 @@ if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
     batterywidgettimer:start()
 end
 
+-- Volume widget
+volume_widget = create_volume_widget()
+
 -- proxy socks status
 local socks_widget = wibox.widget.textbox()    
 socks_widget:set_text("socks status |") 
@@ -260,7 +263,6 @@ for s = 1, screen.count() do
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
-    volume_widget = create_volume_widget()
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
