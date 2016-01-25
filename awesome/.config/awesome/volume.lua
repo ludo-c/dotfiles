@@ -7,7 +7,7 @@
 local awful = require("awful")
 require("autostart")
 -- Get the sink index. https://wiki.archlinux.org/index.php/PulseAudio/Examples
-local fd = io.popen("pacmd list-sinks | grep '* index' | awk '{print $3}'")
+local fd = io.popen("LANG=C pacmd list-sinks | grep '* index' | awk '{print $3}'")
 local sink = tonumber(fd:read("*all"))
 fd:close()
 
@@ -20,14 +20,14 @@ local background_over_100_color = normal_color
 
 -- Functions to fetch volume information (pulseaudio)
 function get_volume() -- returns the volume as a float (1.0 = 100%)
-    local fd = io.popen("pactl list | grep -A 9001 'Sink #".. sink .."' | grep Volume | head -n 1 | awk -F / '{print $2}' | sed 's/[^0-9]*//g'")
+    local fd = io.popen("LANG=C pactl list | grep -A 9001 'Sink #".. sink .."' | grep Volume | head -n 1 |  grep -o '...%' | head -n1 | sed 's/[^0-9]*//g'")
     local volume_str = fd:read("*all")
     fd:close()
     return tonumber(volume_str) / 100
 end
 
 function get_mute() -- returns a true value if muted or a false value if not
-    fd = io.popen("pactl list | grep -A 9001 'Sink #".. sink .."' | grep Mute | head -n 1")
+    fd = io.popen("LANG=C pactl list | grep -A 9001 'Sink #".. sink .."' | grep Mute | head -n 1")
     local mute_str = fd:read("*all")
     fd:close()
     return string.find(mute_str, "yes")
