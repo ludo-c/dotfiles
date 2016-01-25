@@ -11,6 +11,10 @@ local fd = io.popen("LANG=C pacmd list-sinks | grep '* index' | awk '{print $3}'
 local sink = tonumber(fd:read("*all"))
 fd:close()
 
+local fd = io.popen("LANG=C pacmd list-sinks | grep index | wc -l")
+local nb_sink = tonumber(fd:read("*all"))
+fd:close()
+
 -- Color constants
 local normal_color = '#33cc33'
 local over_100_color = '#3333cc'
@@ -57,17 +61,23 @@ end
 -- Volume control functions for external use
 function inc_volume(widget)
     -- awful.util.spawn("amixer -D pulse set Master 5%+") 
-    awful.util.spawn("pactl -- set-sink-volume ".. sink .." +3%", false)
+    for s = 0, nb_sink do
+        awful.util.spawn("pactl -- set-sink-volume ".. s .." +3%", false)
+    end
     update_volume(widget)
 end
 
 function dec_volume(widget)
-    awful.util.spawn("pactl -- set-sink-volume ".. sink .." -3%", false)
+    for s = 0, nb_sink do
+        awful.util.spawn("pactl -- set-sink-volume ".. s .." -3%", false)
+    end
     update_volume(widget)
 end
 
 function mute_volume(widget)
-    awful.util.spawn("pactl -- set-sink-mute ".. sink .." toggle", false)
+    for s = 0, nb_sink do
+        awful.util.spawn("pactl -- set-sink-mute ".. s .." toggle", false)
+    end
     update_volume(widget)
 end
 
