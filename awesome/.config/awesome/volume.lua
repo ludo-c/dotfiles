@@ -57,17 +57,17 @@ end
 -- Volume control functions for external use
 function inc_volume(widget)
     -- awful.util.spawn("amixer -D pulse set Master 5%+") 
-    awful.util.spawn("pactl set-sink-volume ".. sink .." +3%", false)
+    awful.util.spawn("pactl -- set-sink-volume ".. sink .." +3%", false)
     update_volume(widget)
 end
 
 function dec_volume(widget)
-    awful.util.spawn("pactl set-sink-volume ".. sink .." -3%", false)
+    awful.util.spawn("pactl -- set-sink-volume ".. sink .." -3%", false)
     update_volume(widget)
 end
 
 function mute_volume(widget)
-    awful.util.spawn("pactl set-sink-mute ".. sink .." toggle", false)
+    awful.util.spawn("pactl -- set-sink-mute ".. sink .." toggle", false)
     update_volume(widget)
 end
 
