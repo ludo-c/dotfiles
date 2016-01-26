@@ -4,10 +4,6 @@
 
 local awful = require("awful")
 require("autostart")
--- Get the sink index. https://wiki.archlinux.org/index.php/PulseAudio/Examples
-local fd = io.popen("LANG=C pacmd list-sinks | grep '* index' | awk '{print $3}'")
-local default_sink = tonumber(fd:read("*all"))
-fd:close()
 
 -- Color constants
 local normal_color = '#33cc33'
@@ -17,8 +13,14 @@ local background_color = '#222222'
 local background_over_100_color = normal_color
 
 local sink_tab = {} -- new array with sinks index
+local default_sink = nil
 
 local function refresh_sinks()
+	-- Get the sink index. https://wiki.archlinux.org/index.php/PulseAudio/Examples
+	local fd = io.popen("LANG=C pacmd list-sinks | grep '* index' | awk '{print $3}'")
+	default_sink = tonumber(fd:read("*all"))
+	fd:close()
+	-- Get all sinks indexes
     local fd = io.popen("LANG=C pacmd list-sinks | grep index | grep -o '[0-9]*'")
     local i = 1 -- However, it is customary in Lua to start arrays with index 1 http://www.lua.org/pil/11.1.html
     for line in fd:lines() do
@@ -95,6 +97,7 @@ function create_volume_widget()
     volume_widget:set_vertical(true)
     volume_widget:set_border_color('#666666')
     -- Init the widget
+    refresh_sinks()
     update_volume(volume_widget)
 
     volume_widget:buttons (awful.util.table.join (
@@ -103,7 +106,6 @@ function create_volume_widget()
           awful.button ({}, 3, function() mute_volume(volume_widget) end),
           awful.button ({}, 5, function() dec_volume(volume_widget) end)
     ))
-    refresh_sinks()
 
     -- Update the widget on a timer
     mytimer = timer({ timeout = 1 })
