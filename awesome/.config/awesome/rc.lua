@@ -156,21 +156,10 @@ local naugthy_widget = wibox.widget.textbox()
 local socks_widget = wibox.widget.textbox()
 socks_widget:set_text("socks status |")
 -- show the good status immediatly
-function check_tunnel(script)
-    fh = assert(io.popen(script .. " status", "r"))
-    output = fh:read("*l")
-    if output == "active" then
-        socks_status = "<span color='green'>✔</span>"
-    else
-        socks_status = "<span color='red'>✘</span>"
-    end
-    socks_widget:set_markup("|"..script..":"..socks_status.."| ")
-    fh:close()
-end
-check_tunnel("socks.sh")
+check_tunnel(socks_widget, "socks.sh")
 socks_widget_timer = timer({ timeout = 15 })
-socks_widget_timer:connect_signal("timeout",
-  function() check_tunnel("socks.sh") end
+socks_widget_timer:connect_signal("timeout", function()
+    check_tunnel(socks_widget, "socks.sh") end
 )
 socks_widget_timer:start()
 

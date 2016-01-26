@@ -21,3 +21,15 @@ function close_all_naughty_msg()
 end
 -- }}}
 
+function check_tunnel(widget, script)
+    fh = assert(io.popen(script .. " status", "r"))
+    output = fh:read("*l")
+    if output == "active" then
+        socks_status = "<span color='green'>✔</span>"
+    else
+        socks_status = "<span color='red'>✘</span>"
+    end
+    widget:set_markup("|"..script..":"..socks_status.."| ")
+    fh:close()
+end
+
