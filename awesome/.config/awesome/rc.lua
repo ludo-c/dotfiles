@@ -22,6 +22,11 @@ require("lfs")
 require("vicious")
 require("utils")
 
+if lfs.attributes(os.getenv("HOME") .. "/.at_work") then
+    -- Get notifications on screen 2 (left one at work)
+    naughty.config.defaults.screen = 2
+end
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -253,7 +258,7 @@ for s = 1, screen.count() do
     if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
         right_layout:add(batterywidget)
     end
-    if s == 1 then right_layout:add(wibox.widget.systray()) end
+    if s == naughty.config.defaults.screen then right_layout:add(wibox.widget.systray()) end
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
