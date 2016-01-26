@@ -148,6 +148,9 @@ end
 -- Volume widget
 volume_widget = create_volume_widget()
 
+-- naugthy notification indicator
+local naugthy_widget = wibox.widget.textbox()
+
 -- proxy socks status
 local socks_widget = wibox.widget.textbox()
 socks_widget:set_text("socks status |")
@@ -271,6 +274,7 @@ for s = 1, screen.count() do
     layout:set_right(right_layout)
 
     mywibox[s]:set_widget(layout)
+    right_layout:add(naugthy_widget)
 
     right_layout:add(volume_widget)
 end
@@ -371,6 +375,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "F6", function () inc_volume(volume_widget) end),
     awful.key({ modkey,           }, "F7", function () mute_volume(volume_widget) end), -- toggle mute
     awful.key({ modkey, "Mod1"    }, "i", function () awful.util.spawn("gnome-calculator") end), -- mod + altG
+    -- suspend notifications
+    awful.key({ modkey,           }, "F11", function() naughty.suspend(); naugthy_widget:set_markup("<span color='red'>✘</span>") end),
+    awful.key({ modkey,           }, "F12", function() naughty.resume(); naugthy_widget:set_text("") end),
     awful.key({                   }, "F12", function () awful.util.spawn("xscreensaver-command -lock") end),
 
 
