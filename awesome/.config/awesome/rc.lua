@@ -20,6 +20,7 @@ require("autostart")
 require("volume")
 require("lfs")
 require("vicious")
+require("utils")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -375,6 +376,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "F6", function () inc_volume(volume_widget) end),
     awful.key({ modkey,           }, "F7", function () mute_volume(volume_widget) end), -- toggle mute
     awful.key({ modkey, "Mod1"    }, "i", function () awful.util.spawn("gnome-calculator") end), -- mod + altG
+    awful.key({ modkey,           }, "F9", close_last_naughty_msg),
+    awful.key({ modkey,           }, "F10", close_all_naughty_msg),
     -- suspend notifications
     awful.key({ modkey,           }, "F11", function() naughty.suspend(); naugthy_widget:set_markup("<span color='red'>✘</span>") end),
     awful.key({ modkey,           }, "F12", function() naughty.resume(); naugthy_widget:set_text("") end),
