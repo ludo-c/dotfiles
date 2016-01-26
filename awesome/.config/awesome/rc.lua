@@ -149,11 +149,11 @@ end
 volume_widget = create_volume_widget()
 
 -- proxy socks status
-local socks_widget = wibox.widget.textbox()    
-socks_widget:set_text("socks status |") 
+local socks_widget = wibox.widget.textbox()
+socks_widget:set_text("socks status |")
 -- show the good status immediatly
 function check_tunnel(script)
-    fh = assert(io.popen(script .. " status", "r"))    
+    fh = assert(io.popen(script .. " status", "r"))
     output = fh:read("*l")
     if output == "active" then
         socks_status = "<span color='green'>✔</span>"
@@ -161,17 +161,17 @@ function check_tunnel(script)
         socks_status = "<span color='red'>✘</span>"
     end
     socks_widget:set_markup("|"..script..":"..socks_status.."| ")
-    fh:close()    
+    fh:close()
 end
 check_tunnel("socks.sh")
-socks_widget_timer = timer({ timeout = 15 })    
-socks_widget_timer:connect_signal("timeout",    
+socks_widget_timer = timer({ timeout = 15 })
+socks_widget_timer:connect_signal("timeout",
   function() check_tunnel("socks.sh") end
 )
 socks_widget_timer:start()
 
 -- Initialize widget RAM
-local memwidget = wibox.widget.textbox()    
+local memwidget = wibox.widget.textbox()
 -- Register widget
 -- vicious.register(memwidget, vicious.widgets.mem, "$1% ($2MB/$3MB)  ", 5)
 vicious.register(memwidget, vicious.widgets.mem, "RAM:$1% ", 5)

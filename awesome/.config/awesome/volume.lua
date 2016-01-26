@@ -1,5 +1,3 @@
--- WARNING ! Delete some "--" and change "0" to "1" !
-
 -- Creates a volume display widget
 -- Copied/adapted from https://awesome.naquadah.org/wiki/Davids_volume_widget
 ---------------------------------
@@ -68,7 +66,7 @@ end
 
 -- Volume control functions for external use
 function inc_volume(widget)
-    -- awful.util.spawn("amixer -D pulse set Master 5%+") 
+    -- awful.util.spawn("amixer -D pulse set Master 5%+")
     for k,v in pairs(sink_tab) do
         awful.util.spawn("pactl -- set-sink-volume ".. v .." +3%", false)
     end
