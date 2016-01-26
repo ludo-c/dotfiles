@@ -11,16 +11,20 @@ local fd = io.popen("LANG=C pacmd list-sinks | grep '* index' | awk '{print $3}'
 local sink = tonumber(fd:read("*all"))
 fd:close()
 
-local fd = io.popen("LANG=C pacmd list-sinks | grep index | wc -l")
-local nb_sink = tonumber(fd:read("*all"))
-fd:close()
-
 -- Color constants
 local normal_color = '#33cc33'
 local over_100_color = '#3333cc'
 local mute_color = '#cc3333'
 local background_color = '#222222'
 local background_over_100_color = normal_color
+
+local nb_sink = 0
+
+local function refresh_sinks()
+    local fd = io.popen("LANG=C pacmd list-sinks | grep index | wc -l")
+    nb_sink = tonumber(fd:read("*all"))
+    fd:close()
+end
 
 -- Functions to fetch volume information (pulseaudio)
 function get_volume() -- returns the volume as a float (1.0 = 100%)
@@ -75,6 +79,7 @@ function dec_volume(widget)
 end
 
 function mute_volume(widget)
+    refresh_sinks()
     for s = 0, nb_sink do
         awful.util.spawn("pactl -- set-sink-mute ".. s .." toggle", false)
     end
@@ -96,6 +101,7 @@ function create_volume_widget()
           awful.button ({}, 3, function() mute_volume(volume_widget) end),
           awful.button ({}, 5, function() dec_volume(volume_widget) end)
     ))
+    refresh_sinks()
 
     -- Update the widget on a timer
     mytimer = timer({ timeout = 1 })
