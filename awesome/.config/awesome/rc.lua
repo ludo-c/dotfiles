@@ -134,20 +134,7 @@ if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
     batterywidget = wibox.widget.textbox()
     batterywidget:set_text(" | Battery | ")
     batterywidgettimer = timer({ timeout = 15 })
-    batterywidgettimer:connect_signal("timeout",
-    function()
-        fh = assert(io.popen("acpi -b | grep -o '...%' | tr -d '%'", "r"))
-        if tonumber(fh:read("*l")) < 15 then
-            bat_color = 'red'
-        else
-            bat_color = 'grey'
-        end
-        fh:close()
-        fh = assert(io.popen("acpi | cut -d, -f 2,3 - | tr -d ',' | sed 's/[a-z.-]//g'", "r"))
-        batterywidget:set_markup("|<span color='"..bat_color.."'>" .. fh:read("*l") .. "</span> | ")
-        fh:close()
-    end
-    )
+    batterywidgettimer:connect_signal("timeout", function() battery_status(batterywidget) end)
     batterywidgettimer:start()
 end
 
