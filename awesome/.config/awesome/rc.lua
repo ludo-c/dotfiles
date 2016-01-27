@@ -150,14 +150,11 @@ socks_widget:set_text("socks status |")
 -- show the good status immediatly
 check_tunnel(socks_widget, "socks.sh")
 socks_widget_timer = timer({ timeout = 15 })
-socks_widget_timer:connect_signal("timeout", function()
-    check_tunnel(socks_widget, "socks.sh") end
-)
+socks_widget_timer:connect_signal("timeout", function() check_tunnel(socks_widget, "socks.sh") end)
 socks_widget_timer:start()
 
 -- Initialize widget RAM
 local memwidget = wibox.widget.textbox()
--- Register widget
 -- vicious.register(memwidget, vicious.widgets.mem, "$1% ($2MB/$3MB)  ", 5)
 vicious.register(memwidget, vicious.widgets.mem, "RAM:$1% ", 5)
 
@@ -346,6 +343,7 @@ globalkeys = awful.util.table.join(
 
     awful.key({ modkey, "Shift"   }, "i", function () awful.util.spawn("firefox -P proxy") end),
     awful.key({ modkey,           }, "i", function () awful.util.spawn("firefox -P default") end),
+    awful.key({ modkey, "Mod1"    }, "i", function () awful.util.spawn("gnome-calculator") end), -- mod + altG
     awful.key({ modkey,           }, "e", function () awful.util.spawn("thunar") end),
     awful.key({ modkey,           }, "F1", function () awful.util.spawn("qdbus org.mpris.clementine /Player org.freedesktop.MediaPlayer.Prev") end),
     awful.key({ modkey,           }, "F3", function () awful.util.spawn("qdbus org.mpris.clementine /Player org.freedesktop.MediaPlayer.Play") end),
@@ -356,7 +354,6 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "F5", function () dec_volume(volume_widget) end),
     awful.key({ modkey,           }, "F6", function () inc_volume(volume_widget) end),
     awful.key({ modkey,           }, "F7", function () mute_volume(volume_widget) end), -- toggle mute
-    awful.key({ modkey, "Mod1"    }, "i", function () awful.util.spawn("gnome-calculator") end), -- mod + altG
     awful.key({ modkey,           }, "F9", close_last_naughty_msg),
     awful.key({ modkey,           }, "F10", close_all_naughty_msg),
     -- suspend notifications
