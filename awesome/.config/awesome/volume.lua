@@ -16,11 +16,11 @@ local sink_tab = {} -- new array with sinks index
 local default_sink = nil
 
 local function refresh_sinks()
-	-- Get the sink index. https://wiki.archlinux.org/index.php/PulseAudio/Examples
-	local fd = io.popen("LANG=C pacmd list-sinks | grep '* index' | awk '{print $3}'")
-	default_sink = tonumber(fd:read("*all"))
-	fd:close()
-	-- Get all sinks indexes
+    -- Get the sink index. https://wiki.archlinux.org/index.php/PulseAudio/Examples
+    local fd = io.popen("LANG=C pacmd list-sinks | grep '* index' | awk '{print $3}'")
+    default_sink = tonumber(fd:read("*all"))
+    fd:close()
+    -- Get all sinks indexes
     local fd = io.popen("LANG=C pacmd list-sinks | grep index | grep -o '[0-9]*'")
     sink_tab = {} -- reset tab
     local i = 1 -- However, it is customary in Lua to start arrays with index 1 http://www.lua.org/pil/11.1.html
