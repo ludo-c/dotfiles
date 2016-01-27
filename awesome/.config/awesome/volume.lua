@@ -22,6 +22,7 @@ local function refresh_sinks()
 	fd:close()
 	-- Get all sinks indexes
     local fd = io.popen("LANG=C pacmd list-sinks | grep index | grep -o '[0-9]*'")
+    sink_tab = {} -- reset tab
     local i = 1 -- However, it is customary in Lua to start arrays with index 1 http://www.lua.org/pil/11.1.html
     for line in fd:lines() do
         sink_tab[i] = tonumber(line)
