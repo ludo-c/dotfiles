@@ -33,15 +33,16 @@ end
 
 -- Functions to fetch volume information (pulseaudio)
 function get_volume() -- returns the volume as a float (1.0 = 100%)
-    local fd = io.popen("LANG=C pactl list | grep -A 9001 'Sink #".. default_sink .."' | grep Volume | head -n 1 |  grep -o '...%' | head -n1 | sed 's/[^0-9]*//g'")
-    local volume_str = fd:read("*all")
+    -- 'pacmd dump-volumes' is faster than 'patcl list sinks'
+    local fd = io.popen("LANG=C pacmd dump-volumes | grep 'Sink "..default_sink.."' | grep -o '...%' | sed 's/[^0-9]*//g'")
+    local volume_str = fd:read() -- take only the first line (replace a '| head -n 1')
     fd:close()
     return tonumber(volume_str) / 100
 end
 
 function get_mute() -- returns a true value if muted or a false value if not
-    fd = io.popen("LANG=C pactl list | grep -A 9001 'Sink #".. default_sink .."' | grep Mute | head -n 1")
-    local mute_str = fd:read("*all")
+    fd = io.popen("LANG=C pactl list sinks | grep -A 9001 'Sink #".. default_sink .."' | grep Mute")
+    local mute_str = fd:read()
     fd:close()
     return string.find(mute_str, "yes")
 end
