@@ -48,7 +48,7 @@ function battery_status(widget)
         bat_color = 'grey'
     end
     fh:close()
-    fh = assert(io.popen("acpi | cut -d, -f 2,3 - | tr -d ',' | sed 's/[a-z.-]//g'", "r"))
+    fh = assert(io.popen("acpi | cut -d, -f 2,3 - | sed -e 's/[a-z.,-]//g' -e 's/ *$//g' -e 's/^ //g'", "r"))
     widget:set_markup("| <span color='"..bat_color.."'>" .. fh:read("*l") .. "</span> | ")
     fh:close()
 end
