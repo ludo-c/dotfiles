@@ -18,7 +18,7 @@ local default_sink = nil
 local function refresh_sinks()
     -- Get the sink index. https://wiki.archlinux.org/index.php/PulseAudio/Examples
     local fd = io.popen("LANG=C pacmd list-sinks | grep '* index' | awk '{print $3}'")
-    default_sink = tonumber(fd:read("*all"))
+    default_sink = tonumber(fd:read())
     fd:close()
     -- Get all sinks indexes
     local fd = io.popen("LANG=C pacmd list-sinks | grep index | grep -o '[0-9]*'")
