@@ -23,7 +23,7 @@ end
 
 function check_tunnel(widget, script)
     fh = assert(io.popen(script .. " status", "r"))
-    output = fh:read("*l")
+    output = fh:read()
     if output == "active" then
         socks_status = "<span color='green'>✔</span>"
     else

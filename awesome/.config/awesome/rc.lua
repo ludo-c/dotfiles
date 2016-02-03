@@ -147,6 +147,10 @@ local naugthy_widget = wibox.widget.textbox()
 -- proxy socks status
 local socks_widget = wibox.widget.textbox()
 socks_widget:set_text("socks status |")
+socks_widget:buttons (awful.util.table.join (
+	  awful.button ({}, 1, function() check_tunnel(socks_widget, "socks.sh") end),
+	  awful.button ({}, 3, function() check_tunnel(socks_widget, "socks.sh") end)
+))
 -- show the good status immediatly
 check_tunnel(socks_widget, "socks.sh")
 socks_widget_timer = timer({ timeout = 15 })
