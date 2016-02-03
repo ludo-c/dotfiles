@@ -110,9 +110,9 @@ function create_volume_widget()
     ))
 
     -- Update the widget on a timer
-    mytimer = timer({ timeout = 1 })
-    mytimer:connect_signal("timeout", function () update_volume(volume_widget) end)
-    mytimer:start()
+    --mytimer = timer({ timeout = 1 })
+    --mytimer:connect_signal("timeout", function () update_volume(volume_widget) end)
+    --mytimer:start()
 
     return volume_widget
 end
