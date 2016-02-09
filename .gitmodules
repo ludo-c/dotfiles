@@ -4,3 +4,6 @@
 [submodule "urxvt/.urxvt/ext/tabbedex"]
 	path = urxvt/.urxvt/ext/tabbedex
 	url = https://github.com/mina86/urxvt-tabbedex.git
+[submodule "zsh/.zprezto"]
+	path = zsh/.zprezto
+	url = https://github.com/ludo-c/prezto.git
