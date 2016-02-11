@@ -24,3 +24,6 @@ In order to have the battery plugin, add a file "~/.laptop".
 ## urxvt
 Don't forget to update submodules for extensions
 
+## tmux
+Uses 'vlock'
+
