@@ -1,8 +1,14 @@
 # dotfiles
-using stow
+Using stow.
+
+If you did not clone this repos in ~/dotfiles, use this to install files:
+``` shell
+stow --target=$HOME <dir>
+```
 
 ## zsh
 Using zprezto. Install with stow first then read the instructions in order to install it.
+
 https://github.com/ludo-c/prezto.git
 
 ## awesome
@@ -14,4 +20,7 @@ require :
 - uses clementine-player for music, xscreensaver-command, thunar, firefox (with default and proxy profile), nm-applet, blueman-applet, redshift-gtk
 
 In order to have the battery plugin, add a file "~/.laptop".
+
+## urxvt
+Don't forget to update submodules for extensions
 
