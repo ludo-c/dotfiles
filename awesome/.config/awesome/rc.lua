@@ -150,8 +150,8 @@ local naugthy_widget = wibox.widget.textbox()
 local socks_widget = wibox.widget.textbox()
 socks_widget:set_text("socks status |")
 socks_widget:buttons (awful.util.table.join (
-	  awful.button ({}, 1, function() check_tunnel(socks_widget, "socks.sh") end),
-	  awful.button ({}, 3, function() check_tunnel(socks_widget, "socks.sh") end)
+      awful.button ({}, 1, function() check_tunnel(socks_widget, "socks.sh") end),
+      awful.button ({}, 3, function() check_tunnel(socks_widget, "socks.sh") end)
 ))
 -- show the good status immediatly
 check_tunnel(socks_widget, "socks.sh")
@@ -549,10 +549,10 @@ run_once("xscreensaver -no-splash")
 run_once("redshift-gtk")
 run_once("compton -b --inactive-dim 0.3 --sw-opti")
 if lfs.attributes(os.getenv("HOME") .. "/.at_home") then
-run_once("blueman-applet")
-run_once("nm-applet")
+    run_once("blueman-applet")
+    run_once("nm-applet")
 end
 if lfs.attributes(os.getenv("HOME") .. "/.at_work") then
-	run_once("hqtray")
-	run_once("xrandr --output DVI-I-1 --left-of VGA-0")
+    run_once("hqtray")
+    run_once("xrandr --output DVI-I-1 --left-of VGA-0")
 end
