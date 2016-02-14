@@ -16,7 +16,9 @@ local sink_tab = {} -- new array with sinks index
 local default_sink = nil
 
 local function refresh_sinks()
-    -- Get the sink index. https://wiki.archlinux.org/index.php/PulseAudio/Examples
+    -- call it BEFORE update_volume
+
+    -- Get the default sink index. https://wiki.archlinux.org/index.php/PulseAudio/Examples
     local fd = io.popen("LANG=C pacmd list-sinks | grep '* index' | awk '{print $3}'")
     default_sink = tonumber(fd:read())
     fd:close()
@@ -29,6 +31,26 @@ local function refresh_sinks()
         i = i + 1
     end
     fd:close()
+
+    -- set same volume everywhere
+    local volume_str = get_volume() * 100
+    volume_str = volume_str.."%"
+    for k,v in pairs(sink_tab) do
+        awful.util.spawn("pactl -- set-sink-volume ".. v .." "..volume_str, false)
+    end
+
+    -- same mute state everywhere
+    if get_mute() then
+        for k,v in pairs(sink_tab) do
+            awful.util.spawn("pactl -- set-sink-mute ".. v .." yes", false)
+        end
+    else
+        for k,v in pairs(sink_tab) do
+            awful.util.spawn("pactl -- set-sink-mute ".. v .." no", false)
+        end
+    end
+
+
 end
 
 -- Functions to fetch volume information (pulseaudio)
