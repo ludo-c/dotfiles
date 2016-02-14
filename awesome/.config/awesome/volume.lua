@@ -36,17 +36,17 @@ local function refresh_sinks()
     local volume_str = get_volume() * 100
     volume_str = volume_str.."%"
     for k,v in pairs(sink_tab) do
-        awful.util.spawn("pactl -- set-sink-volume ".. v .." "..volume_str, false)
+        os.execute("pactl -- set-sink-volume ".. v .." "..volume_str, false)
     end
 
     -- same mute state everywhere
     if get_mute() then
         for k,v in pairs(sink_tab) do
-            awful.util.spawn("pactl -- set-sink-mute ".. v .." yes", false)
+            os.execute("pactl -- set-sink-mute ".. v .." yes", false)
         end
     else
         for k,v in pairs(sink_tab) do
-            awful.util.spawn("pactl -- set-sink-mute ".. v .." no", false)
+            os.execute("pactl -- set-sink-mute ".. v .." no", false)
         end
     end
 
@@ -92,16 +92,16 @@ end
 
 -- Volume control functions for external use
 function inc_volume(widget)
-    -- awful.util.spawn("amixer -D pulse set Master 5%+")
+    -- os.execute("amixer -D pulse set Master 5%+")
     for k,v in pairs(sink_tab) do
-        awful.util.spawn("pactl -- set-sink-volume ".. v .." +3%", false)
+        os.execute("pactl -- set-sink-volume ".. v .." +3%", false)
     end
     update_volume(widget)
 end
 
 function dec_volume(widget)
     for k,v in pairs(sink_tab) do
-        awful.util.spawn("pactl -- set-sink-volume ".. v .." -3%", false)
+        os.execute("pactl -- set-sink-volume ".. v .." -3%", false)
     end
     update_volume(widget)
 end
@@ -109,7 +109,7 @@ end
 function mute_volume(widget)
     refresh_sinks()
     for k,v in pairs(sink_tab) do
-        awful.util.spawn("pactl -- set-sink-mute ".. v .." toggle", false)
+        os.execute("pactl -- set-sink-mute ".. v .." toggle", false)
     end
     update_volume(widget)
 end
