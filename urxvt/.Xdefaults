@@ -63,7 +63,7 @@ URxvt.color15 : #EEEEEC
 !URxvt.keysym.C-k:       echo -ne '\\033c'\n
 
 ! https://github.com/muennich/urxvt-perls
-URxvt.perl-ext-common: default,perls/url-select,perls/keyboard-select,perls/clipboard,tabbedex/tabbedex
+URxvt.perl-ext-common: default,perls/url-select,perls/keyboard-select,perls/clipboard,tabbedex
 ! url-select
 URxvt.keysym.M-u: perl:url-select:select_next
 URxvt.url-select.underline: true
