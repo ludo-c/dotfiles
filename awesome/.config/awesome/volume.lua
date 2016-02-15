@@ -17,7 +17,7 @@ local default_sink = nil
 local volume_real = 0
 
 local function refresh_sinks()
-    -- call it BEFORE update_volume
+    -- call it BEFORE update_widget
 
     -- Get the default sink index. https://wiki.archlinux.org/index.php/PulseAudio/Examples
     local fd = io.popen("LANG=C pacmd list-sinks | grep '* index' | awk '{print $3}'")
@@ -77,7 +77,7 @@ function get_mute() -- returns a true value if muted or a false value if not
 end
 
 -- Updates the volume widget's display
-local function update_volume(widget, volume_step)
+local function update_widget(widget, step)
     local volume
     local mute
 
@@ -113,14 +113,14 @@ function inc_volume(widget)
     for k,v in pairs(sink_tab) do
         os.execute("pactl -- set-sink-volume ".. v .." +3%", false)
     end
-    update_volume(widget, "+3")
+    update_widget(widget, step)
 end
 
 function dec_volume(widget)
     for k,v in pairs(sink_tab) do
         os.execute("pactl -- set-sink-volume ".. v .." -3%", false)
     end
-    update_volume(widget, "-3")
+    update_widget(widget, step)
 end
 
 function mute_volume(widget)
@@ -128,7 +128,7 @@ function mute_volume(widget)
     for k,v in pairs(sink_tab) do
         os.execute("pactl -- set-sink-mute ".. v .." toggle", false)
     end
-    update_volume(widget)
+    update_widget(widget)
 end
 
 function create_volume_widget()
@@ -139,7 +139,7 @@ function create_volume_widget()
     volume_widget:set_border_color('#666666')
     -- Init the widget
     refresh_sinks()
-    update_volume(volume_widget)
+    update_widget(volume_widget)
 
     volume_widget:buttons (awful.util.table.join (
           awful.button ({}, 1, function() run_once("pavucontrol") end),
@@ -150,7 +150,7 @@ function create_volume_widget()
 
     -- Update the widget on a timer
     --mytimer = timer({ timeout = 1 })
-    --mytimer:connect_signal("timeout", function () update_volume(volume_widget) end)
+    --mytimer:connect_signal("timeout", function () update_widget(volume_widget) end)
     --mytimer:start()
 
     return volume_widget
