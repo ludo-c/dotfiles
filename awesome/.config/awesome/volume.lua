@@ -15,6 +15,7 @@ local background_over_100_color = normal_color
 local sink_tab = {} -- new array with sinks index
 local default_sink = nil
 local volume_real = 0
+local volume_step = 3
 
 local function refresh_sinks()
     -- call it BEFORE update_widget
@@ -81,7 +82,7 @@ local function update_widget(widget, step)
     local volume
     local mute
 
-    if volume_step == nil then
+    if step == nil then
         volume = get_volume()
         mute = get_mute()
     else
@@ -107,19 +108,28 @@ local function update_widget(widget, step)
     widget:set_value(volume)
 end
 
+-- true -> increase, false -> decrease
+local function update_volume(inc)
+    -- os.execute("amixer -D pulse set Master 5%+")
+    if inc == true then
+        step = "+".. volume_step
+    else
+        step = "-".. volume_step
+    end
+    for k,v in pairs(sink_tab) do
+        os.execute("pactl -- set-sink-volume ".. v .." ".. step .."%", false)
+    end
+    return step
+end
+
 -- Volume control functions for external use
 function inc_volume(widget)
-    -- os.execute("amixer -D pulse set Master 5%+")
-    for k,v in pairs(sink_tab) do
-        os.execute("pactl -- set-sink-volume ".. v .." +3%", false)
-    end
+    local step = update_volume(true)
     update_widget(widget, step)
 end
 
 function dec_volume(widget)
-    for k,v in pairs(sink_tab) do
-        os.execute("pactl -- set-sink-volume ".. v .." -3%", false)
-    end
+    local step = update_volume(false)
     update_widget(widget, step)
 end
 
