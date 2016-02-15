@@ -14,6 +14,7 @@ local background_over_100_color = normal_color
 
 local sink_tab = {} -- new array with sinks index
 local default_sink = nil
+local real_volume = 0
 
 local function refresh_sinks()
     -- call it BEFORE update_volume
@@ -76,9 +77,19 @@ function get_mute() -- returns a true value if muted or a false value if not
 end
 
 -- Updates the volume widget's display
-local function update_volume(widget)
-    local volume = get_volume()
-    local mute = get_mute()
+local function update_volume(widget, volume_step)
+    local volume
+    local mute
+
+    if volume_step == nil then
+        volume = get_volume()
+        mute = get_mute()
+    else
+        volume = real_volume + tonumber(volume_step / 100)
+        --dbg({real_volume,volume_step, tonumber(volume_step / 100), volume})
+        if volume < 0 then volume = 0 end
+    end
+    real_volume = volume
 
     -- color
     color = normal_color
@@ -102,14 +113,14 @@ function inc_volume(widget)
     for k,v in pairs(sink_tab) do
         os.execute("pactl -- set-sink-volume ".. v .." +3%", false)
     end
-    update_volume(widget)
+    update_volume(widget, "+3")
 end
 
 function dec_volume(widget)
     for k,v in pairs(sink_tab) do
         os.execute("pactl -- set-sink-volume ".. v .." -3%", false)
     end
-    update_volume(widget)
+    update_volume(widget, "-3")
 end
 
 function mute_volume(widget)
