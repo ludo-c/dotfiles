@@ -14,7 +14,7 @@ local background_over_100_color = normal_color
 
 local sink_tab = {} -- new array with sinks index
 local default_sink = nil
-local real_volume = 0
+local volume_real = 0
 
 local function refresh_sinks()
     -- call it BEFORE update_volume
@@ -85,11 +85,11 @@ local function update_volume(widget, volume_step)
         volume = get_volume()
         mute = get_mute()
     else
-        volume = real_volume + tonumber(volume_step / 100)
-        --dbg({real_volume,volume_step, tonumber(volume_step / 100), volume})
+        volume = volume_real + tonumber(step / 100)
+        --dbg({volume_real,step, tonumber(step / 100), volume})
         if volume < 0 then volume = 0 end
     end
-    real_volume = volume
+    volume_real = volume
 
     -- color
     color = normal_color
