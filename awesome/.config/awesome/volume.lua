@@ -36,17 +36,23 @@ local function refresh_sinks()
     local volume_str = get_volume() * 100
     volume_str = volume_str.."%"
     for k,v in pairs(sink_tab) do
-        os.execute("pactl -- set-sink-volume ".. v .." "..volume_str, false)
+        if v ~= default_sink then
+            os.execute("pactl -- set-sink-volume ".. v .." "..volume_str, false)
+        end
     end
 
     -- same mute state everywhere
     if get_mute() then
         for k,v in pairs(sink_tab) do
-            os.execute("pactl -- set-sink-mute ".. v .." yes", false)
+            if v ~= default_sink then
+                os.execute("pactl -- set-sink-mute ".. v .." yes", false)
+            end
         end
     else
         for k,v in pairs(sink_tab) do
-            os.execute("pactl -- set-sink-mute ".. v .." no", false)
+            if v ~= default_sink then
+                os.execute("pactl -- set-sink-mute ".. v .." no", false)
+            end
         end
     end
 
