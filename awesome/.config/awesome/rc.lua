@@ -134,7 +134,7 @@ mytextclock = awful.widget.textclock()
 if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
     -- http://askubuntu.com/questions/611350/need-battery-applet-for-awesome-wm-and-ubuntu-14-04
     batterywidget = wibox.widget.textbox()
-    batterywidget:set_text(" | Battery | ")
+    battery_status(batterywidget)
     batterywidgettimer = timer({ timeout = 15 })
     batterywidgettimer:connect_signal("timeout", function() battery_status(batterywidget) end)
     batterywidgettimer:start()
