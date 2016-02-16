@@ -34,6 +34,16 @@ local function get_mute() -- returns a true value if muted or a false value if n
     return string.find(mute_str, "yes")
 end
 
+local function update_mute(state, not_default)
+    -- not_default -> do not update default sink
+    local val = state
+    for k,v in pairs(sink_tab) do
+        if not_default == nil or (not_default ~= nil and  v ~= default_sink) then
+            os.execute("pactl -- set-sink-mute ".. v .." ".. val, false)
+        end
+    end
+end
+
 local function refresh_sinks()
     -- call it BEFORE update_widget
 
@@ -60,19 +70,11 @@ local function refresh_sinks()
         end
     end
 
-    -- same mute state everywhere
+    -- set same mute state everywhere
     if get_mute() then
-        for k,v in pairs(sink_tab) do
-            if v ~= default_sink then
-                os.execute("pactl -- set-sink-mute ".. v .." yes", false)
-            end
-        end
+        update_mute("yes", true)
     else
-        for k,v in pairs(sink_tab) do
-            if v ~= default_sink then
-                os.execute("pactl -- set-sink-mute ".. v .." no", false)
-            end
-        end
+        update_mute("no", true)
     end
 
 end
@@ -137,9 +139,7 @@ end
 
 function mute_volume(widget)
     refresh_sinks()
-    for k,v in pairs(sink_tab) do
-        os.execute("pactl -- set-sink-mute ".. v .." toggle", false)
-    end
+    update_mute("toggle")
     update_widget(widget)
 end
 
