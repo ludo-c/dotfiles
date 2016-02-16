@@ -16,6 +16,7 @@ local sink_tab = {} -- new array with sinks index
 local default_sink = nil
 local volume_real = 0
 local volume_step = 3
+local mute_real = nil
 
 local function refresh_sinks()
     -- call it BEFORE update_widget
@@ -85,10 +86,12 @@ local function update_widget(widget, step)
     if step == nil then
         volume = get_volume()
         mute = get_mute()
+        mute_real = mute
     else
         volume = volume_real + tonumber(step / 100)
         --dbg({volume_real,step, tonumber(step / 100), volume})
         if volume < 0 then volume = 0 end
+        mute = mute_real
     end
     volume_real = volume
 
