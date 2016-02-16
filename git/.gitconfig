@@ -1,0 +1,27 @@
+[user]
+	name = Ludo
+	email = ludo-c@users.noreply.github.com
+[color]
+	status = auto
+	branch = auto
+	diff = auto
+	ui = true
+[alias]
+	ci = commit
+	co = checkout
+	st = status
+	br = branch
+	gr = log --graph --decorate --pretty=oneline --abbrev-commit
+	last = log -1 HEAD
+	webui = !~/.git-webui/release/libexec/git-core/git-webui
+	logg = log --pretty=oneline --abbrev-commit --graph
+# http://stackoverflow.com/questions/231211/using-git-how-do-i-find-changes-between-local-and-remote
+	out = log @{u}..
+	in = log ..@{u}
+[webui]
+	autoupdate = true
+[core]
+	editor = vim
+	pager = cat
+[push]
+	default = simple
