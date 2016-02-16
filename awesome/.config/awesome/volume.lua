@@ -15,7 +15,7 @@ local background_over_100_color = normal_color
 local sink_tab = {} -- new array with sinks index
 local default_sink = nil
 local volume_real = 0
-local volume_step = 3
+local volume_step = 3 -- in percentage
 local mute_real = nil
 
 -- Functions to fetch volume information (pulseaudio)
@@ -32,6 +32,17 @@ local function get_mute() -- returns a true value if muted or a false value if n
     local mute_str = fd:read()
     fd:close()
     return string.find(mute_str, "yes")
+end
+
+local function update_volume(value, not_default)
+    -- not_default -> do not update default sink
+    -- os.execute("amixer -D pulse set Master 5%+")
+    for k,v in pairs(sink_tab) do
+        if not_default == nil or (not_default ~= nil and  v ~= default_sink) then
+            os.execute("pactl -- set-sink-volume ".. v .." ".. value, false)
+        end
+    end
+    return step
 end
 
 local function update_mute(state, not_default)
@@ -64,11 +75,7 @@ local function refresh_sinks()
     -- set same volume everywhere
     local volume_str = get_volume() * 100
     volume_str = volume_str.."%"
-    for k,v in pairs(sink_tab) do
-        if v ~= default_sink then
-            os.execute("pactl -- set-sink-volume ".. v .." "..volume_str, false)
-        end
-    end
+    update_volume(volume_str, true)
 
     -- set same mute state everywhere
     if get_mute() then
@@ -112,29 +119,17 @@ local function update_widget(widget, step)
     widget:set_value(volume)
 end
 
--- true -> increase, false -> decrease
-local function update_volume(inc)
-    -- os.execute("amixer -D pulse set Master 5%+")
-    if inc == true then
-        step = "+".. volume_step
-    else
-        step = "-".. volume_step
-    end
-    for k,v in pairs(sink_tab) do
-        os.execute("pactl -- set-sink-volume ".. v .." ".. step .."%", false)
-    end
-    return step
-end
-
 -- Volume control functions for external use
 function inc_volume(widget)
-    local step = update_volume(true)
-    update_widget(widget, step)
+    local value = "+".. volume_step
+    update_volume(value .."%")
+    update_widget(widget, value)
 end
 
 function dec_volume(widget)
-    local step = update_volume(false)
-    update_widget(widget, step)
+    local value = "-".. volume_step
+    update_volume(value .."%")
+    update_widget(widget, value)
 end
 
 function mute_volume(widget)
