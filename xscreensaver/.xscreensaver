@@ -29,10 +29,10 @@ dpmsQuickOff:	False
 dpmsStandby:	2:00:00
 dpmsSuspend:	2:00:00
 dpmsOff:	4:00:00
-grabDesktopImages:  Yes
+grabDesktopImages:  False
 grabVideoFrames:    False
-chooseRandomImages: Yes
-imageDirectory:	/home/lchopin/Images/wallpaper/
+chooseRandomImages: False
+imageDirectory:
 
 mode:		blank
 selected:	-1
