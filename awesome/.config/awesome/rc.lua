@@ -164,6 +164,15 @@ local memwidget = wibox.widget.textbox()
 -- vicious.register(memwidget, vicious.widgets.mem, "$1% ($2MB/$3MB)  ", 5)
 vicious.register(memwidget, vicious.widgets.mem, "RAM:$1% ", 5)
 
+-- Initialize widget
+local cpuwidget = awful.widget.graph()
+-- Graph properties
+cpuwidget:set_width(50)
+cpuwidget:set_background_color("#494B4F")
+cpuwidget:set_color("#FF5656")
+cpuwidget:set_stack_colors({ "#FF5656", "#88A175", "#AECF96" })
+-- Register widget
+vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -245,6 +254,7 @@ for s = 1, screen.count() do
     local right_layout = wibox.layout.fixed.horizontal()
     right_layout:add(socks_widget)
     right_layout:add(memwidget)
+    right_layout:add(cpuwidget)
     if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
         right_layout:add(batterywidget)
     end
