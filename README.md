@@ -1,6 +1,12 @@
 # dotfiles
 Using stow.
 
+git clone --recursive https://github.com/ludo-c/dotfiles.git
+
+update submodules:
+
+git submodule update --init --recursive
+
 If you did not clone this repos in ~/dotfiles, use this to install files:
 ``` shell
 stow --target=$HOME <dir>
