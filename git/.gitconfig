@@ -9,7 +9,7 @@
 [alias]
 	ci = commit
 	co = checkout
-	st = status
+	st = status -u
 	br = branch
 	gr = log --graph --decorate --pretty=oneline --abbrev-commit
 	last = log -1 HEAD
