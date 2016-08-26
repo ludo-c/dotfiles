@@ -355,6 +355,7 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86AudioStop", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop") end),
     awful.key({ }, "XF86AudioPlay", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
     awful.key({ }, "XF86AudioNext", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next") end),
+    awful.key({ }, "Print", function () awful.util.spawn("scrot -zu") end),
 
     awful.key({ modkey, "Shift"   }, "i", function () awful.util.spawn("firefox -P proxy") end),
     awful.key({ modkey,           }, "i", function () awful.util.spawn("firefox -P default") end),
