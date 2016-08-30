@@ -558,7 +558,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 run_once("xscreensaver -no-splash")
 run_once("redshift-gtk")
-run_once("compton -b --inactive-dim 0.3 --sw-opti")
+run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader")
 run_once("sparkleshare start")
 if lfs.attributes(os.getenv("HOME") .. "/.at_home") then
     run_once("blueman-applet")
