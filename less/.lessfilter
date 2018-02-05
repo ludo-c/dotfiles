@@ -1,0 +1,183 @@
+#!/bin/zsh
+# input preprocessor for less
+# from https://bitbucket.org/barmic/config/src/34c08ff0bbe3f5d2845041a148b3e54dc0613eb9/lessfilter?at=default&fileviewer=file-view-default
+
+function cmdexist() {
+  which "$1" >/dev/null
+}
+
+function runifexist() {
+  which "$1" >/dev/null && "$@"
+}
+
+declare -A particular_files
+# file name | lexer
+particular_files["makefile"]="make"
+particular_files["Makefile"]="make"
+particular_files[".bashrc"]="shell"
+particular_files[".zshrc"]="shell"
+particular_files[".zsh_aliases"]="shell"
+particular_files[".zsh_functions"]="shell"
+
+declare -A lexers
+# pygmentize | highlight
+lexers["c"]="c"
+lexers["pl"]="perl"
+lexers["py"]="python"
+lexers["sh"]="shell"
+lexers["php"]="php"
+lexers["tex"]="tex"
+lexers["make"]="make"
+lexers["html"]="html"
+
+function colorize() {
+  runifexist pygmentize -l "$1" "$2"
+  runifexist highlight -S "${lexers[$1]}" -O ansi "$2"
+}
+
+exec 2<&-
+exec 2<>/dev/null
+
+# print LESSOPEN variable, when called without args
+# (use it with absolute path)
+if [ $# -eq 0 ]; then
+    echo "LESSOPEN=\"|$0 %s\""
+    echo "LESSCHARSET=utf-8"
+    if env | grep -q '^LESS=' ; then
+        if ! echo $LESS | grep -q '\-R' ; then
+            echo "LESS=\"-R $LESS\""
+        fi
+    else
+        echo "LESS=-R"
+    fi
+    echo "export LESS LESSOPEN LESSCHARSET"
+    exit
+fi
+
+# Check usage
+if [ $# -gt 1 ]; then
+    echo "Usage: Don't use it directly"
+    echo "Launch \"eval \$($0)\" to use it with less"
+fi
+
+# We just determine file type of $1
+# and determine which viewer is appropriate
+case "$(file -Lb "$1")" in
+# Folder
+directory) ls -la "$1" ;;
+
+# Archive
+POSIX[[:space:]]tar[[:space:]]archive*)
+    tar tvvf "$1" ;;
+gzip[[:space:]]compressed[[:space:]]data*) # Test if tar or man
+    if gzip -dc "$1" | file - | grep -q 'tar archive' ; then
+        tar tvvf "$1"
+    elif gzip -dc "$1" | file - | grep -q 'roff' ; then
+        gzip -dc "$1" | nroff -S -mandoc -
+    else
+        gzip -dc "$1"
+    fi ;;
+bzip2[[:space:]]compressed[[:space:]]data*)
+    if bzip2 -dc "$1" | file - | grep -q 'tar archive' ; then
+        tar tvvf "$1"
+    elif bzip2 -dc "$1" | file - | grep -q 'roff' ; then
+        bzip2 -dc "$1" | nroff -S -mandoc -
+    else
+        bzip2 -dc "$1"
+    fi ;;
+cpio[[:space:]]archive)
+    runifexist cpio -it < "$1" ;;
+[Xx][Zz][[:space:]]compressed[[:space:]]data*)
+    if xz -dc "$1" | file - | grep 'tar archive' ; then
+        xz -dc "$1" | tar tvvf -
+    else
+        xz -dc "$1"
+    fi ;;
+data) # Test if lzma archive
+    if xz -t "$1" ; then
+        if xz -F lzma -dc "$1" | file - | grep 'tar archive' ; then
+            xz -F lzma -dc "$1" | tar tvvf -
+        else
+            xz -F lzma -dc "$1"
+        fi
+    else
+        echo "Unrecognized file"
+    fi ;;
+ISO[[:space:]]9660[[:space:]]CD-ROM[[:space:]]filesystem[[:space:]]data | UDF[[:space:]]filesystem[[:space:]]data*)
+    if cmdexist isoinfo ; then
+        echo "$1:" ; isoinfo -d -i "$1"
+        echo
+        echo '***Contents:' ; isoinfo -f -i "$1"
+    fi ;;
+Zip[[:space:]]archive[[:space:]]data*) unzip -l "$1" ;;
+RAR[[:space:]]archive[[:space:]]data*) runifexist unrar l "$1" ;;
+
+# Distributions Packages
+Debian[[:space:]]binary[[:space:]]package*)
+    if cmdexist dpkg ; then
+        echo "$1:" ; dpkg --info "$1"
+        echo
+        echo '*** Contents:' ; dpkg-deb --contents "$1"
+    else
+        ar p "$1" data.tar.gz | tar tzvf -
+    fi ;;
+RPM*)
+    if cmdexist rpm ; then
+        echo "$1:" ; rpm -q -i -p "$1"
+        echo
+        echo '*** Contents:' ; rpm -q -l -p "$1"
+    elif cmdexist rpm2cpio ; then
+        rpm2cpio "$1" | cpio -it
+    elif cmdexist rpm2tar ; then
+        rpm2tar -O "$1" | tar tvf -
+    fi ;;
+
+# Printable documents
+PDF[[:space:]]document*)    runifexist pdftotext "$1" - ;;
+PostScript[[:space:]]document*)
+    if cmdexist pdftotext && cmdexist ps2pdf ; then
+      tmpfile=$(mktemp)
+      ps2pdf "$1" > "${tmpfile}"
+      pdftotext "${tmpfile}" -
+      rm -f "${tmpfile}"
+    fi ;;
+TeX[[:space:]]DVI[[:space:]]file*) runifexist dvi2tty "$1" ;;
+
+# Editable documents
+LaTeX*document*[[:space:]]text)          rcolorize tex "$1" ;;
+HTML[[:space:]]document[[:space:]]text) rcolorize html "$1" ;;
+OpenDocument[[:space:]]Text) runifexist odt2txt "$1" ;;
+CDF[[:space:]]V2[[:space:]]Document*) # MS Office document
+    [[ "$1" =~ .doc$ ]] && runifexist catdoc "$1"
+    [[ "$1" =~ .xls$ ]] && runifexist xls2csv "$1" ;;
+troff*)
+    nroff -S -mandoc "$1" ;;
+
+# text
+*[Pp]erl*script*text*)      colorize pl "$1" ;;
+*[Pp]ython*script*text*)    colorize py "$1" ;;
+*sh*script*text*)           colorize sh "$1" ;;
+*[pP][hH][pP]*script*text*) colorize php "$1" ;;
+*C*program*text)            colorize c "$1" ;;
+*text)                      colorize "${particular_files[$(basename $1)]}" "$1" ;;
+tcpdump[[:space:]]capture[[:space:]]file*) runifexist tshark -r "$1" ;;
+
+# Images
+JPEG[[:space]]image[[:space:]]data*)
+    runifexist identify "$1"
+    runifexist jp2a --color "$1" ;;
+
+*image[[:space:]]data*)
+    runifexist identify "$1"
+    cmdexist jp2a && convert "$1" jpg:- | jp2a --color - ;;
+
+# Media files
+*Audio[[:space:]]file*)
+    mp3info "$1"
+    ;;
+
+# Others
+# *)
+#   cat "$1" ;;
+
+esac
