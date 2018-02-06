@@ -347,6 +347,7 @@ globalkeys = awful.util.table.join(
     -- custom hotkeys
     awful.key({ modkey,           }, "a", function () awful.client.cycle(true, mouse.screen)  end),
     awful.key({ modkey, "Shift"   }, "a", function () awful.client.cycle(false, mouse.screen)  end),
+    awful.key({ modkey,           }, "s", function () awful.util.spawn("xfce4-appfinder") end),
 
     awful.key({ }, "XF86AudioRaiseVolume", function () inc_volume(volume_widget) end),
     awful.key({ }, "XF86AudioLowerVolume", function () dec_volume(volume_widget) end),
@@ -477,6 +478,10 @@ awful.rules.rules = {
     -- Set Firefox to always map on tags number 2 of screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { tag = tags[1][2] } },
+
+	-- custom rule
+	{ rule = { class = "Xfce4-appfinder" },
+	  properties = { floating = true } },
 }
 -- }}}
 
