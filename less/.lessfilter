@@ -155,13 +155,16 @@ JPEG[[:space]]image[[:space:]]data*)
 *)
     case "$(echo "$(basename $1)" | tr '[:upper:]' '[:lower:]')" in
     .zsh*)
-        colorize shell $1
+        colorize shell "$1"
 	;;
     .bash*)
-        colorize shell $1
+        colorize shell "$1"
         ;;
     makefile)
-        colorize make $1
+        colorize make "$1"
+	;;
+    *.xml)
+        colorize xml "$1"
 	;;
     *.mp3)
         mp3info "$1"
@@ -170,7 +173,7 @@ JPEG[[:space]]image[[:space:]]data*)
         mediainfo "$1"
         ;;
     *)
-	exit 1 # Give a chance to the standard lessfile (debian)
+	exit 2 # Give a chance to the standard lessfile (debian)
         ;;
     esac
 
