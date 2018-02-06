@@ -140,6 +140,9 @@ troff*)
 *sh*script*text*)           colorize sh "$1" ;;
 *[pP][hH][pP]*script*text*) colorize php "$1" ;;
 *C*program*text)            colorize c "$1" ;;
+*[Xx][Mm][Ll]*text)         colorize xml "$1" ;;
+*[Ss][Vv][Gg]*image)        colorize xml "$1" ;;
+*text)                      colorize "" "$1";;
 tcpdump[[:space:]]capture[[:space:]]file*) runifexist tshark -r "$1" ;;
 
 # Images
@@ -154,18 +157,6 @@ JPEG[[:space]]image[[:space:]]data*)
 # Others, check extension
 *)
     case "$(echo "$(basename $1)" | tr '[:upper:]' '[:lower:]')" in
-    .zsh*)
-        colorize shell "$1"
-	;;
-    .bash*)
-        colorize shell "$1"
-        ;;
-    makefile)
-        colorize make "$1"
-	;;
-    *.xml)
-        colorize xml "$1"
-	;;
     *.mp3)
         mp3info "$1"
         ;;
