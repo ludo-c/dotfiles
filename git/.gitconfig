@@ -18,6 +18,9 @@
 # http://stackoverflow.com/questions/231211/using-git-how-do-i-find-changes-between-local-and-remote
 	out = log @{u}..
 	in = log ..@{u}
+	sha = rev-parse HEAD
+	git = !exec git
+	g = !exec git
 [webui]
 	autoupdate = true
 [core]
