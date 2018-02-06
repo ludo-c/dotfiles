@@ -23,8 +23,8 @@ require("vicious")
 require("utils")
 
 if lfs.attributes(os.getenv("HOME") .. "/.at_work") then
-    -- Get notifications on screen 2 (left one at work)
-    naughty.config.defaults.screen = 2
+    -- Get notifications on screen 1 (left one at work)
+    naughty.config.defaults.screen = 1
 end
 
 -- {{{ Error handling
@@ -559,12 +559,13 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 run_once("xscreensaver -no-splash")
 run_once("redshift-gtk")
 run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader")
+--run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader --invert-color-include 'g:e:Eclipse'")
 run_once("sparkleshare start")
+run_once("nm-applet")
 if lfs.attributes(os.getenv("HOME") .. "/.at_home") then
     run_once("blueman-applet")
-    run_once("nm-applet")
 end
 if lfs.attributes(os.getenv("HOME") .. "/.at_work") then
     run_once("hqtray")
-    run_once("xrandr --output DVI-I-1 --left-of VGA-0")
+    --run_once("xrandr --output DVI-I-1 --left-of VGA-0")
 end
