@@ -10,29 +10,8 @@ function runifexist() {
   which "$1" >/dev/null && "$@"
 }
 
-declare -A particular_files
-# file name | lexer
-particular_files["makefile"]="make"
-particular_files["Makefile"]="make"
-particular_files[".bashrc"]="shell"
-particular_files[".zshrc"]="shell"
-particular_files[".zsh_aliases"]="shell"
-particular_files[".zsh_functions"]="shell"
-
-declare -A lexers
-# pygmentize | highlight
-lexers["c"]="c"
-lexers["pl"]="perl"
-lexers["py"]="python"
-lexers["sh"]="shell"
-lexers["php"]="php"
-lexers["tex"]="tex"
-lexers["make"]="make"
-lexers["html"]="html"
-
 function colorize() {
   runifexist pygmentize -l "$1" "$2"
-  runifexist highlight -S "${lexers[$1]}" -O ansi "$2"
 }
 
 exec 2<&-
@@ -58,13 +37,15 @@ fi
 if [ $# -gt 1 ]; then
     echo "Usage: Don't use it directly"
     echo "Launch \"eval \$($0)\" to use it with less"
+    exit 1
 fi
+
 
 # We just determine file type of $1
 # and determine which viewer is appropriate
 case "$(file -Lb "$1")" in
 # Folder
-directory) ls -la "$1" ;;
+directory) ls -la --color=yes "$1" ;;
 
 # Archive
 POSIX[[:space:]]tar[[:space:]]archive*)
@@ -159,7 +140,6 @@ troff*)
 *sh*script*text*)           colorize sh "$1" ;;
 *[pP][hH][pP]*script*text*) colorize php "$1" ;;
 *C*program*text)            colorize c "$1" ;;
-*text)                      colorize "${particular_files[$(basename $1)]}" "$1" ;;
 tcpdump[[:space:]]capture[[:space:]]file*) runifexist tshark -r "$1" ;;
 
 # Images
@@ -171,13 +151,29 @@ JPEG[[:space]]image[[:space:]]data*)
     runifexist identify "$1"
     cmdexist jp2a && convert "$1" jpg:- | jp2a --color - ;;
 
-# Media files
-*Audio[[:space:]]file*)
-    mp3info "$1"
-    ;;
+# Others, check extension
+*)
+    case "$(echo "$(basename $1)" | tr '[:upper:]' '[:lower:]')" in
+    .zsh*)
+        colorize shell $1
+	;;
+    .bash*)
+        colorize shell $1
+        ;;
+    makefile)
+        colorize make $1
+	;;
+    *.mp3)
+        mp3info "$1"
+        ;;
+    *.mpg|*.avi|*.wmv|*.ogg|*.mkv|*.mpeg|*.mp4)
+        mediainfo "$1"
+        ;;
+    *)
+	exit 1 # Give a chance to the standard lessfile (debian)
+        ;;
+    esac
 
-# Others
-# *)
-#   cat "$1" ;;
-
+;;
 esac
+
