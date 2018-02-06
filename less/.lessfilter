@@ -1,16 +1,16 @@
-#!/bin/zsh
+#!/bin/sh
 # input preprocessor for less
 # from https://bitbucket.org/barmic/config/src/34c08ff0bbe3f5d2845041a148b3e54dc0613eb9/lessfilter?at=default&fileviewer=file-view-default
 
-function cmdexist() {
+cmdexist() {
   which "$1" >/dev/null
 }
 
-function runifexist() {
+runifexist() {
   which "$1" >/dev/null && "$@"
 }
 
-function colorize() {
+colorize() {
   runifexist pygmentize -l "$1" "$2"
 }
 
