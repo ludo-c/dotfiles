@@ -45,7 +45,7 @@ fi
 # and determine which viewer is appropriate
 case "$(file -Lb "$1")" in
 # Folder
-directory) ls -la --color=yes "$1" ;;
+directory) ls -la --group-directories-first --color=yes "$1" ;;
 
 # Archive
 POSIX[[:space:]]tar[[:space:]]archive*)
@@ -142,7 +142,18 @@ troff*)
 *C*program*text)            colorize c "$1" ;;
 *[Xx][Mm][Ll]*text)         colorize xml "$1" ;;
 *[Ss][Vv][Gg]*image)        colorize xml "$1" ;;
-*text)                      colorize "" "$1";;
+*text)
+    # Try to match some configuration files
+    case "$(echo "$(basename $1)" | tr '[:upper:]' '[:lower:]')" in
+    ssh*_config)
+        colorize aconf "$1"
+	;;
+    *)
+        colorize "" "$1"
+	;;
+    esac
+;;
+
 tcpdump[[:space:]]capture[[:space:]]file*) runifexist tshark -r "$1" ;;
 
 # Images
