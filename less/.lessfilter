@@ -11,7 +11,12 @@ runifexist() {
 }
 
 colorize() {
-  runifexist pygmentize -l "$1" "$2"
+    if [ ! -z $1 ]; then
+        lang=" --syntax "$1
+    fi
+    runifexist highlight ${lang} -O ansi "$2"
+    # way much slower. 5sec for a 900Ko Makefile
+    #runifexist pygmentize -l "$1" "$2"
 }
 
 exec 2<&-
@@ -146,7 +151,11 @@ troff*)
     # Try to match some configuration files
     case "$(echo "$(basename $1)" | tr '[:upper:]' '[:lower:]')" in
     ssh*_config)
-        colorize aconf "$1"
+        colorize aconf "$1"  # pygmentize
+	;;
+    makefile)
+        # hightligth doesn't like files without extension
+        colorize makefile "$1"
 	;;
     *)
         colorize "" "$1"
