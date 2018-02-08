@@ -34,7 +34,7 @@ xvt.reverseVideo: True
 URxvt.background : #000000
 URxvt.foreground : #FFFFFF
 
-URxvt.termName: rxvt-256color
+URxvt.termName: rxvt-unicode-256color
 URxvt*colorUL: #86a2b0
 
 ! black
