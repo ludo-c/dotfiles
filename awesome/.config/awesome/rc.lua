@@ -380,7 +380,7 @@ globalkeys = awful.util.table.join(
     -- suspend notifications
     awful.key({ modkey,           }, "F11", function() naughty.suspend(); naugthy_widget:set_markup("<span color='red'>✘</span>") end),
     awful.key({ modkey,           }, "F12", function() naughty.resume(); naugthy_widget:set_text("") end),
-    awful.key({                   }, "F12", function () awful.util.spawn("xscreensaver-command -lock") end),
+    awful.key({                   }, "F12", function () awful.util.spawn("gnome-screensaver-command --lock") end),
 
 
     -- Menubar
@@ -564,11 +564,9 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
-run_once("xscreensaver -no-splash")
-run_once("redshift-gtk")
+--run_once("xscreensaver -no-splash")
 run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader")
 --run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader --invert-color-include 'g:e:Eclipse'")
-run_once("sparkleshare start")
 run_once("nm-applet")
 if lfs.attributes(os.getenv("HOME") .. "/.at_home") then
     run_once("blueman-applet")
