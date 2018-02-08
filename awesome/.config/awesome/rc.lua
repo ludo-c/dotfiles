@@ -57,6 +57,8 @@ end
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
+-- change it with:
+-- (debian/ubuntu) sudo update-alternatives --config x-terminal-emulator
 terminal = "x-terminal-emulator"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
@@ -361,6 +363,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "i", function () awful.util.spawn("firefox -P proxy") end),
     awful.key({ modkey,           }, "i", function () awful.util.spawn("firefox -P default") end),
     awful.key({ modkey, "Mod1"    }, "i", function () awful.util.spawn("gnome-calculator") end), -- mod + altG
+    --awful.key({ modkey,           }, "e", function () awful.util.spawn("thunar") end),
     awful.key({ modkey,           }, "e", function () awful.util.spawn("nautilus --no-desktop") end),
     awful.key({ modkey,           }, "F1", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous") end),
     awful.key({ modkey,           }, "F2", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
