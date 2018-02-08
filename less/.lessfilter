@@ -164,6 +164,12 @@ troff*)
         # hightligth doesn't like files without extension
         colorize makefile "$1"
 	;;
+    .z*)
+        colorize sh "$1"
+        ;;
+    .bash*)
+        colorize sh "$1"
+        ;;
     *)
         colorize "" "$1"
 	;;
