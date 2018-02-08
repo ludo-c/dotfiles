@@ -157,9 +157,6 @@ troff*)
     ssh*_config)
         colorize2 aconf "$1"  # pygmentize
 	;;
-    *.conf)
-        colorize2 aconf "$1"  # pygmentize
-	;;
     makefile)
         # hightligth doesn't like files without extension
         colorize makefile "$1"
