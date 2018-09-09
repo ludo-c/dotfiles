@@ -148,23 +148,23 @@ volume_widget = create_volume_widget()
 -- naugthy notification indicator
 local naugthy_widget = wibox.widget.textbox()
 
--- proxy socks status
+---- proxy socks status
 local socks_widget = wibox.widget.textbox()
 socks_widget:set_text("socks status |")
-socks_widget:buttons (awful.util.table.join (
-      awful.button ({}, 1, function() check_tunnel(socks_widget, "socks.sh") end),
-      awful.button ({}, 3, function() check_tunnel(socks_widget, "socks.sh") end)
-))
--- show the good status immediatly
-check_tunnel(socks_widget, "socks.sh")
-socks_widget_timer = timer({ timeout = 15 })
-socks_widget_timer:connect_signal("timeout", function() check_tunnel(socks_widget, "socks.sh") end)
-socks_widget_timer:start()
+--socks_widget:buttons (awful.util.table.join (
+--      awful.button ({}, 1, function() check_tunnel(socks_widget, "socks.sh") end),
+--      awful.button ({}, 3, function() check_tunnel(socks_widget, "socks.sh") end)
+--))
+---- show the good status immediatly
+--check_tunnel(socks_widget, "socks.sh")
+--socks_widget_timer = timer({ timeout = 15 })
+--socks_widget_timer:connect_signal("timeout", function() check_tunnel(socks_widget, "socks.sh") end)
+--socks_widget_timer:start()
 
 -- Initialize widget RAM
 local memwidget = wibox.widget.textbox()
 -- vicious.register(memwidget, vicious.widgets.mem, "$1% ($2MB/$3MB)  ", 5)
-vicious.register(memwidget, vicious.widgets.mem, "RAM:$1% ", 5)
+--vicious.register(memwidget, vicious.widgets.mem, "RAM:$1% ", 5)
 
 -- Initialize widget
 local cpuwidget = awful.widget.graph()
@@ -174,7 +174,7 @@ cpuwidget:set_background_color("#494B4F")
 cpuwidget:set_color("#FF5656")
 cpuwidget:set_stack_colors({ "#FF5656", "#88A175", "#AECF96" })
 -- Register widget
-vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
+--vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -349,7 +349,7 @@ globalkeys = awful.util.table.join(
     -- custom hotkeys
     awful.key({ modkey,           }, "a", function () awful.client.cycle(true, mouse.screen)  end),
     awful.key({ modkey, "Shift"   }, "a", function () awful.client.cycle(false, mouse.screen)  end),
-    awful.key({ modkey,           }, "s", function () awful.util.spawn("xfce4-appfinder") end),
+    awful.key({ modkey,           }, "s", function () run_once("xfce4-appfinder --disable-server") end),
 
     awful.key({ }, "XF86AudioRaiseVolume", function () inc_volume(volume_widget) end),
     awful.key({ }, "XF86AudioLowerVolume", function () dec_volume(volume_widget) end),
