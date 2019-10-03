@@ -12,6 +12,11 @@ If you did not clone this repos in ~/dotfiles, use this to install files:
 stow --target=$HOME <dir>
 ```
 
+## less
+Don't forget to install "highlight" in order to have colorized output.
+
+It could work with pygmentize too, with small modifications, but it is slower
+
 ## zsh
 Using zprezto. Install with stow first then read the instructions in order to install it.
 
