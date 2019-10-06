@@ -20,7 +20,7 @@ URxvt*scrollTtyKeypress: true
 !URxvt*font: xft:Bitstream Vera Sans Mono:style=Regular:pixelsize=11:antialias=false
 URxvt.font: xft:Bitstream Vera Sans Mono:size=9:antialias=false
 !URxvt*font: xft:DejaVu Sans Mono:style=Regular:pixelsize=11:antialias=true
-URxvt.letterSpace:-1
+URxvt.letterSpace:0
 !URxvt.lineSpace:-1
 !Xft.dpi: 96
 Xft.antialias: false
@@ -34,8 +34,7 @@ xvt.reverseVideo: True
 URxvt.background : #000000
 URxvt.foreground : #FFFFFF
 
-!URxvt.termName: xterm-256color
-URxvt.termName: rxvt-unicode-256color
+URxvt.termName: rxvt-color
 URxvt*colorUL: #86a2b0
 
 ! black
