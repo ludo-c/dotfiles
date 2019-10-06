@@ -14,10 +14,7 @@ function close_last_naughty_msg()
 end
 
 function close_all_naughty_msg()
-    n = close_last_naughty_msg()
-    while n do
-        n = close_last_naughty_msg()
-    end
+	naughty.destroy_all_notifications()
 end
 -- }}}
 

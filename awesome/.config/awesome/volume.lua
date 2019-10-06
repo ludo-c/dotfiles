@@ -3,6 +3,7 @@
 ---------------------------------
 
 local awful = require("awful")
+local wibox = require("wibox")
 require("autostart")
 
 -- Color constants
@@ -113,10 +114,10 @@ local function update_widget(widget, step)
     end
     color = (mute and mute_color) or color
 
-    widget:set_color(color)
-    widget:set_background_color(bg_color)
+    widget.widget:set_color(color)
+    widget.widget:set_background_color(bg_color)
 
-    widget:set_value(volume)
+    widget.widget:set_value(volume)
 end
 
 -- Volume control functions for external use
@@ -140,10 +141,17 @@ end
 
 function create_volume_widget()
     -- Define volume widget
-    volume_widget = awful.widget.progressbar()
-    volume_widget:set_width(8)
-    volume_widget:set_vertical(true)
-    volume_widget:set_border_color('#666666')
+    volume_widget = wibox.widget {
+	    {
+		max_value     = 1,
+		widget        = wibox.widget.progressbar,
+	    },
+	    --forced_height = 20,
+	    forced_width  = 10,
+	    direction     = 'east',
+	    bar_border_color = '#666666',
+	    layout        = wibox.container.rotate
+	}
     -- Init the widget
     refresh_sinks()
     update_widget(volume_widget)
