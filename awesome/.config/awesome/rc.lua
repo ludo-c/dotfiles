@@ -587,7 +587,8 @@ awful.rules.rules = {
           "Wpa_gui",
           "veromix",
           "xtightvncviewer",
-          "Xfce4-appfinder"},
+          "Xfce4-appfinder",
+	  },
 
         -- Note that the name property shown in xprop might be set slightly after creation of the client
         -- and the name shown there might not match defined rules here.
