@@ -152,17 +152,21 @@ socks_widget_timer:connect_signal("timeout", function() check_tunnel(socks_widge
 socks_widget_timer:start()
 
 -- Initialize widget RAM
-local memwidget = wibox.widget.textbox()
+local memwidget2 = wibox.widget.textbox()
 -- vicious.register(memwidget, vicious.widgets.mem, "$1% ($2MB/$3MB)  ", 5)
-vicious.register(memwidget, vicious.widgets.mem, "RAM:$1% ", 5)
+vicious.register(memwidget2, vicious.widgets.mem, "RAM:$1% ", 5)
+local memwidget = wibox.widget.graph()
+memwidget:set_width(50)
+memwidget:set_background_color("#494B4F")
+memwidget:set_color("#AECF96")
+vicious.register(memwidget, vicious.widgets.mem, "$1")
 
 -- Initialize widget CPU
-local cpuwidget = awful.widget.graph()
+local cpuwidget = wibox.widget.graph()
 -- Graph properties
 cpuwidget:set_width(50)
 cpuwidget:set_background_color("#494B4F")
 cpuwidget:set_color("#FF5656")
-cpuwidget:set_stack_colors({ "#FF5656", "#88A175", "#AECF96" })
 -- Register widget
 vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
 
@@ -283,6 +287,7 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             --mykeyboardlayout,
 	    socks_widget,
+	    memwidget2,
 	    memwidget,
 	    cpuwidget,
 	    batterywidget,
