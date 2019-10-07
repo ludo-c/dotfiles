@@ -588,6 +588,7 @@ awful.rules.rules = {
           "veromix",
           "xtightvncviewer",
           "Xfce4-appfinder",
+		  "Mate-calculator",
 	  },
 
         -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -600,7 +601,10 @@ awful.rules.rules = {
           "ConfigManager",  -- Thunderbird's about:config.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
         }
-      }, properties = { floating = true }},
+      }, properties = { floating = true,
+                        placement = awful.placement.centered
+                      }
+      },
 
     -- Add titlebars to normal clients and dialogs
     --{ rule_any = {type = { "normal", "dialog" }
