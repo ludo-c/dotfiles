@@ -419,8 +419,8 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "i", function () awful.util.spawn("firefox -P proxy") end),
     awful.key({ modkey,           }, "i", function () awful.util.spawn("firefox -P default") end),
     awful.key({ modkey, "Mod1"    }, "i", function () awful.util.spawn("mate-calculator") end), -- mod + altG
-    --awful.key({ modkey,           }, "e", function () awful.util.spawn("thunar") end),
-    awful.key({ modkey,           }, "e", function () awful.util.spawn("nautilus") end),
+    awful.key({ modkey,           }, "e", function () awful.util.spawn("thunar") end),
+    --awful.key({ modkey,           }, "e", function () awful.util.spawn("nautilus") end),
     awful.key({ modkey,           }, "F1", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous") end),
     awful.key({ modkey,           }, "F2", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
 	-- "play" restart the current playing song
