@@ -687,9 +687,7 @@ run_once("redshift-gtk")
 run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader --focus-exclude \"name ~= 'Eclipse'\"")
 --run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader --invert-color-include 'g:e:Eclipse'")
 run_once("nm-applet")
-if lfs.attributes(os.getenv("HOME") .. "/.at_home") then
-     run_once("blueman-applet")
-end
+ run_once("blueman-applet")
 if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
 end
 if lfs.attributes(os.getenv("HOME") .. "/.at_work") then
