@@ -21,10 +21,20 @@
 	sha = rev-parse HEAD
 	git = !exec git
 	g = !exec git
+	kdiff = difftool --tool kdiff3 --dir-diff
 [webui]
 	autoupdate = true
+[gui]
+	spellingdictionary = en
 [core]
 	editor = vim
-	pager = cat
+#	pager = cat
 [push]
 	default = simple
+[merge]
+	tool = kdiff3
+[diff]
+	tool = kdiff3
+[mergetool "kdiff"]
+	cmd = kdiff3 -b $BASE $LOCAL $REMOTE -o $MERGED
+
