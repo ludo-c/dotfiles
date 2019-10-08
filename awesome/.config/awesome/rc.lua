@@ -191,26 +191,29 @@ mytextclock = wibox.widget.textbox()
 vicious.register(mytextclock, vicious.widgets.date, " %a %b %d, %R")
 
 -- https://stackoverflow.com/questions/38945309/activate-vicious-widgets-net-widget-only-if-interface-is-available
-eths = { 'eno2', 'wlo1' }
+eths = {}
+-- https://unix.stackexchange.com/questions/270008/retrieve-name-of-the-active-network-interface-only
+local fd = io.popen("LANG=C ip addr show | awk '/inet.*brd/{print $NF}'")
+local i = 1 -- However, it is customary in Lua to start arrays with index 1 http://www.lua.org/pil/11.1.html
+for line in fd:lines() do
+	eths[i] = line
+	i = i + 1
+end
+fd:close()
 netwidget = wibox.widget.textbox()
 vicious.register( netwidget, vicious.widgets.net,
 function(widget,args)
-t=''
-for i = 1, #eths do
-e = eths[i]
-if args["{"..e.." carrier}"] == 1 then
-    --if e == 'wlp3s0' then
-        --t=t..'|'..e..': <span color="#CC9933"> down: '..args['{'..e..' down_kb}']..' kbps</span>  <span color="#7F9F7F">up: ' ..args['{'..e..' up_kb}']..' kbps </span>'--..'[ '..args['{'..e..' rx_gb}'].. ' GB // ' ..args['{'..e..' tx_gb}']..' GB ] '
-        t=t..'|'..e..(": <span color='#CC9933'> ⇵: %6.2f mbps</span> / <span color='#7F9F7F'>%6.2f mbps </span>"):format(args['{'..e..' down_mb}'], args['{'..e..' up_mb}'])
-    --else
-    --    t=t..'|'..e..': <span color="#CC9933"> down: '..args['{'..e..' down_kb}']..' kbps</span>  <span color="#7F9F7F">up: ' ..args['{'..e..' up_kb}']..'   kbps </span>'--..'[ '..args['{'..e..' rx_gb}'].. ' GB // ' ..args['{'..e..' tx_gb}']..' GB ] '
-    --end
-end
-end
-if string.len(t)>0 then -- remove leading '|'
-return string.sub(t,2,-1)
-end
-return 'No network'
+	t=''
+	for i = 1, #eths do
+		e = eths[i]
+		if args["{"..e.." carrier}"] == 1 then
+		        t=t..'| ⇵'..e..(":<span color='#CC9933' font='monospace'>%5.1f</span> <span color='#7F9F7F' font='monospace'>%5.1f</span> "):format(args['{'..e..' down_mb}'], args['{'..e..' up_mb}'])
+		end
+	end
+	if string.len(t)>0 then -- remove leading '|'
+		return string.sub(t,2,-1)
+	end
+	return 'No network'
 end
 , 1 )
 
