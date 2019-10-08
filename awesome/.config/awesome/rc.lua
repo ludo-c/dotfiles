@@ -153,12 +153,15 @@ socks_widget_timer:start()
 
 -- Initialize widget RAM
 local memwidget2 = wibox.widget.textbox()
+vicious.cache(vicious.widgets.mem)
 -- vicious.register(memwidget, vicious.widgets.mem, "$1% ($2MB/$3MB)  ", 5)
 vicious.register(memwidget2, vicious.widgets.mem, "RAM:$1% ", 5)
 local memwidget = wibox.widget.graph()
 memwidget:set_width(50)
 memwidget:set_background_color("#494B4F")
-memwidget:set_color("#AECF96")
+--memwidget:set_color("#AECF96")
+memwidget:set_color{type = "linear", from = {0, 0}, to = {0, 50},
+                    stops = {{0, "#FF5656"}, {0.25, "#88A175"}, {1, "#AECF96"}}}
 vicious.register(memwidget, vicious.widgets.mem, "$1")
 
 -- Initialize widget CPU
@@ -166,7 +169,9 @@ local cpuwidget = wibox.widget.graph()
 -- Graph properties
 cpuwidget:set_width(50)
 cpuwidget:set_background_color("#494B4F")
-cpuwidget:set_color("#FF5656")
+--cpuwidget:set_color("#FF5656")
+cpuwidget:set_color{type = "linear", from = {0, 0}, to = {0, 50},
+                    stops = {{0, "#FF5656"}, {0.4, "#88A175"}, {1, "#AECF96"}}}
 -- Register widget
 vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
 
