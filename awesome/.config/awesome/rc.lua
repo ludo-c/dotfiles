@@ -146,10 +146,14 @@ socks_widget:buttons (awful.util.table.join (
     awful.button ({}, 3, function() check_tunnel(socks_widget, "socks.sh") end)
 ))
 -- show the good status immediatly
-check_tunnel(socks_widget, "socks.sh")
-socks_widget_timer = timer({ timeout = 15 })
-socks_widget_timer:connect_signal("timeout", function() check_tunnel(socks_widget, "socks.sh") end)
-socks_widget_timer:start()
+gears.timer {
+    timeout   = 15,
+    call_now  = true,
+    autostart = true,
+    callback  = function()
+		 check_tunnel(socks_widget, "socks.sh")
+    end
+}
 
 -- Initialize widget RAM
 local memwidget2 = wibox.widget.textbox()
