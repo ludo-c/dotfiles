@@ -190,6 +190,30 @@ end
 mytextclock = wibox.widget.textbox()
 vicious.register(mytextclock, vicious.widgets.date, " %a %b %d, %R")
 
+-- https://stackoverflow.com/questions/38945309/activate-vicious-widgets-net-widget-only-if-interface-is-available
+eths = { 'eno2', 'wlo1' }
+netwidget = wibox.widget.textbox()
+vicious.register( netwidget, vicious.widgets.net,
+function(widget,args)
+t=''
+for i = 1, #eths do
+e = eths[i]
+if args["{"..e.." carrier}"] == 1 then
+    --if e == 'wlp3s0' then
+        --t=t..'|'..e..': <span color="#CC9933"> down: '..args['{'..e..' down_kb}']..' kbps</span>  <span color="#7F9F7F">up: ' ..args['{'..e..' up_kb}']..' kbps </span>'--..'[ '..args['{'..e..' rx_gb}'].. ' GB // ' ..args['{'..e..' tx_gb}']..' GB ] '
+        t=t..'|'..e..(": <span color='#CC9933'> ⇵: %6.2f mbps</span> / <span color='#7F9F7F'>%6.2f mbps </span>"):format(args['{'..e..' down_mb}'], args['{'..e..' up_mb}'])
+    --else
+    --    t=t..'|'..e..': <span color="#CC9933"> down: '..args['{'..e..' down_kb}']..' kbps</span>  <span color="#7F9F7F">up: ' ..args['{'..e..' up_kb}']..'   kbps </span>'--..'[ '..args['{'..e..' rx_gb}'].. ' GB // ' ..args['{'..e..' tx_gb}']..' GB ] '
+    --end
+end
+end
+if string.len(t)>0 then -- remove leading '|'
+return string.sub(t,2,-1)
+end
+return 'No network'
+end
+, 1 )
+
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),
@@ -292,6 +316,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             --mykeyboardlayout,
+        netwidget,
 	    socks_widget,
 	    memwidget2,
 	    memwidget,
