@@ -139,8 +139,10 @@ volume_widget = create_volume_widget()
 local naugthy_widget = wibox.widget.textbox()
 
 -- proxy socks status
-local socks_widget = wibox.widget.textbox()
-socks_widget:set_text("socks status |")
+local socks_widget = wibox.widget {
+	text = "socks status |",
+	widget = wibox.widget.textbox,
+}
 socks_widget:buttons (awful.util.table.join (
     awful.button ({}, 1, function() check_tunnel(socks_widget, "socks.sh") end),
     awful.button ({}, 3, function() check_tunnel(socks_widget, "socks.sh") end)
@@ -156,42 +158,50 @@ gears.timer {
 }
 
 -- Initialize widget RAM
-local memwidget2 = wibox.widget.textbox()
+local memwidget2 = wibox.widget {
+	widget = wibox.widget.textbox
+}
+
+local memwidget = wibox.widget {
+	background_color = "#494B4F",
+	forced_width = 50,
+	color = {type = "linear", from = {0, 0}, to = {0, 50},
+	         stops = {{0, "#FF5656"}, {0.25, "#88A175"}, {1, "#AECF96"}}},
+	widget = wibox.widget.graph,
+}
 vicious.cache(vicious.widgets.mem)
--- vicious.register(memwidget, vicious.widgets.mem, "$1% ($2MB/$3MB)  ", 5)
 vicious.register(memwidget2, vicious.widgets.mem, "RAM:$1% ", 5)
-local memwidget = wibox.widget.graph()
-memwidget:set_width(50)
-memwidget:set_background_color("#494B4F")
---memwidget:set_color("#AECF96")
-memwidget:set_color{type = "linear", from = {0, 0}, to = {0, 50},
-                    stops = {{0, "#FF5656"}, {0.25, "#88A175"}, {1, "#AECF96"}}}
 vicious.register(memwidget, vicious.widgets.mem, "$1")
 
 -- Initialize widget CPU
-local cpuwidget = wibox.widget.graph()
--- Graph properties
-cpuwidget:set_width(50)
-cpuwidget:set_background_color("#494B4F")
---cpuwidget:set_color("#FF5656")
-cpuwidget:set_color{type = "linear", from = {0, 0}, to = {0, 50},
-                    stops = {{0, "#FF5656"}, {0.4, "#88A175"}, {1, "#AECF96"}}}
--- Register widget
+local cpuwidget = wibox.widget {
+	background_color = "#494B4F",
+	forced_width = 50,
+	color = {type = "linear", from = {0, 0}, to = {0, 50},
+	         stops = {{0, "#FF5656"}, {0.4, "#88A175"}, {1, "#AECF96"}}},
+	widget = wibox.widget.graph,
+}
 vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
 
 if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
     -- http://askubuntu.com/questions/611350/need-battery-applet-for-awesome-wm-and-ubuntu-14-04
     batterywidget = wibox.widget.textbox()
-    battery_status(batterywidget)
-    batterywidgettimer = timer({ timeout = 15 })
-    batterywidgettimer:connect_signal("timeout", function() battery_status(batterywidget) end)
-    batterywidgettimer:start()
+    gears.timer {
+        timeout   = 15,
+        call_now  = true,
+        autostart = true,
+        callback  = function()
+             battery_status(batterywidget)
+        end
+    }
 end
 
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textbox()
+mytextclock = wibox.widget {
+	widget = wibox.widget.textbox
+}
 vicious.register(mytextclock, vicious.widgets.date, " %a %b %d, %R")
 
 -- https://stackoverflow.com/questions/38945309/activate-vicious-widgets-net-widget-only-if-interface-is-available
@@ -204,7 +214,10 @@ for line in fd:lines() do
 	i = i + 1
 end
 fd:close()
-netwidget = wibox.widget.textbox()
+
+netwidget = wibox.widget {
+	widget = wibox.widget.textbox
+}
 vicious.register( netwidget, vicious.widgets.net,
 function(widget,args)
 	t=''
