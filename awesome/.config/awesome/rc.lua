@@ -187,7 +187,8 @@ end
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+mytextclock = wibox.widget.textbox()
+vicious.register(mytextclock, vicious.widgets.date, " %a %b %d, %R")
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
