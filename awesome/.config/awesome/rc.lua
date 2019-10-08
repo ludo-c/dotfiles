@@ -196,6 +196,24 @@ if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
     }
 end
 
+cmd = [[ bash -c "sensors -u coretemp-isa-0000 | awk '/temp1_input/ { print  }'"]]
+--local tempwidget = awful.widget.watch(cmd, 15)
+local tempwidget = wibox.widget.textbox()
+gears.timer {
+	timeout = 10,
+	call_now = true,
+	autostart = true,
+	callback = function()
+		awful.spawn.with_line_callback(cmd, {
+			stdout = function(line)
+				tempwidget:set_markup(line)
+			end,
+			stderr = function(line)
+				naughty.notify({ text = "ERR:"..line})
+			end,
+	})
+	end
+}
 
 -- {{{ Wibar
 -- Create a textclock widget
@@ -336,6 +354,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             --mykeyboardlayout,
+        tempwidget,
         netwidget,
 	    socks_widget,
 	    memwidget2,
