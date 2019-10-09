@@ -243,10 +243,12 @@ gears.timer {
 	callback = function()
 		awful.spawn.with_line_callback(cmd, {
 			stdout = function(line)
-				tempwidget:set_markup(line)
+				new_line = string.gsub(line, 'temp1_input', 'CPU')
+				new_line = string.gsub(new_line, '.000', '°C')
+				tempwidget:set_markup(new_line)
 			end,
 			stderr = function(line)
-				naughty.notify({ text = "ERR:"..line})
+				tempwidget:set_markup("ERR:"..line)
 			end,
 	})
 	end
