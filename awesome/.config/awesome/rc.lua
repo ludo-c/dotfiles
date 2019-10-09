@@ -261,23 +261,32 @@ vicious.register(mytextclock, vicious.widgets.date, " %a %b %d, %R")
 
 -- https://stackoverflow.com/questions/38945309/activate-vicious-widgets-net-widget-only-if-interface-is-available
 eths = {}
--- https://unix.stackexchange.com/questions/270008/retrieve-name-of-the-active-network-interface-only
-local fd = io.popen("LANG=C ip addr show | awk '/inet.*brd/{print $NF}'")
-local i = 1 -- However, it is customary in Lua to start arrays with index 1 http://www.lua.org/pil/11.1.html
-for line in fd:lines() do
-	eths[i] = line
-	i = i + 1
+function update_eths()
+	-- https://unix.stackexchange.com/questions/270008/retrieve-name-of-the-active-network-interface-only
+	awful.spawn.easy_async_with_shell("LANG=C ip addr show | awk '/inet.*brd/{print $NF}'", function(stdout)
+	    local i = 1 -- However, it is customary in Lua to start arrays with index 1 http://www.lua.org/pil/11.1.html
+		for line in stdout:gmatch"(.-)\n" do
+            eths[i] = line
+            i = i + 1
+	    end
+	end)
 end
-fd:close()
+gears.timer {
+    timeout = 10,
+    call_now = true,
+    autostart = true,
+    callback = update_eths,
+}
+
 
 netwidget = wibox.widget {
 	widget = wibox.widget.textbox
 }
 vicious.register( netwidget, vicious.widgets.net,
 function(widget,args)
-	t=''
+	local t=''
 	for i = 1, #eths do
-		e = eths[i]
+		local e = eths[i]
 		if args["{"..e.." carrier}"] == 1 then
 		        t=t..'| ⇵'..e..(":<span color='#CC9933' font='monospace'>%5.1f</span> <span color='#7F9F7F' font='monospace'>%5.1f</span> "):format(args['{'..e..' down_mb}'], args['{'..e..' up_mb}'])
 		end
@@ -285,7 +294,7 @@ function(widget,args)
 	if string.len(t)>0 then -- remove leading '|'
 		return string.sub(t,2,-1)
 	end
-	return 'No network'
+	return '| ⇵ No network '
 end
 , 2)
 
