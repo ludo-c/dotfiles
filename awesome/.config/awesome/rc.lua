@@ -533,7 +533,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "F6", function () inc_volume(volume_widget) end),
     awful.key({ modkey,           }, "F7", function () mute_volume(volume_widget) end), -- toggle mute
     --awful.key({ modkey,           }, "F9", close_last_naughty_msg),
-    awful.key({ modkey,           }, "F10", close_all_naughty_msg),
+    awful.key({ modkey,           }, "F10", naughty.destroy_all_notifications),
     -- suspend notifications
     awful.key({ modkey,           }, "F11", function() naughty.suspend(); naugthy_widget:set_markup("<span color='red'>✘</span>") end),
     awful.key({ modkey,           }, "F12", function() naughty.resume(); naugthy_widget:set_text("") end),

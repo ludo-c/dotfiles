@@ -2,11 +2,6 @@
 
 local naughty = require("naughty")
 
-function close_all_naughty_msg()
-	naughty.destroy_all_notifications()
-end
--- }}}
-
 -- http://awesome.naquadah.org/wiki/Naughty/fr
 function dbg(vars)
     local text = ""
