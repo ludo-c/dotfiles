@@ -1,30 +1,11 @@
+-- utils functions
+
 local naughty = require("naughty")
 
 function close_all_naughty_msg()
 	naughty.destroy_all_notifications()
 end
 -- }}}
-
-function check_tunnel(widget, script)
-    fh = assert(io.popen(script .. " status", "r"))
-    output = fh:read()
-    if output == "active" then
-        socks_status = "<span color='green'>✔</span>"
-    else
-        socks_status = "<span color='red'>✘</span>"
-    end
-
-    -- remove extension
-    -- http://codereview.stackexchange.com/questions/90177/get-file-name-with-extension-and-get-only-extension
-    -- http://www.luteus.biz/Download/LoriotPro_Doc/LUA/LUA_Training_FR/LUA_Fonction_Chaine.html
-    ext = script:match("^.+(%..+)$")
-    if (ext ~= nil) then
-        ext = ext.."$" -- only match the end of the string
-        script = script:gsub(ext, "")
-    end
-    widget:set_markup("| "..script.." "..socks_status.." | ")
-    fh:close()
-end
 
 -- http://awesome.naquadah.org/wiki/Naughty/fr
 function dbg(vars)

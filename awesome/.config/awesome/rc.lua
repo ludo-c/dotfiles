@@ -143,6 +143,29 @@ local socks_widget = wibox.widget {
 	text = "socks status |",
 	widget = wibox.widget.textbox,
 }
+
+function check_tunnel(widget, script)
+    -- remove extension
+    -- http://codereview.stackexchange.com/questions/90177/get-file-name-with-extension-and-get-only-extension
+    -- http://www.luteus.biz/Download/LoriotPro_Doc/LUA/LUA_Training_FR/LUA_Fonction_Chaine.html
+    ext = script:match("^.+(%..+)$")
+    if (ext ~= nil) then
+        ext = ext.."$" -- only match the end of the string
+        script_no_ext = script:gsub(ext, "")
+    end
+
+	awful.spawn.easy_async(script .. " status", function(stdout)
+		if string.match(stdout, "inactive") then
+			socks_status = "<span color='red'>✘</span>"
+		else
+			socks_status = "<span color='green'>✔</span>"
+		end
+
+        socks_widget:set_markup("| "..script_no_ext.." "..socks_status.." | ")
+	end)
+
+end
+
 socks_widget:buttons (awful.util.table.join (
     awful.button ({}, 1, function() check_tunnel(socks_widget, "socks.sh") end),
     awful.button ({}, 3, function() check_tunnel(socks_widget, "socks.sh") end)
@@ -250,7 +273,7 @@ function(widget,args)
 	end
 	return 'No network'
 end
-, 1 )
+, 2)
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -765,7 +788,7 @@ run_once("redshift-gtk")
 run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader --focus-exclude \"name ~= 'Eclipse'\"")
 --run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader --invert-color-include 'g:e:Eclipse'")
 run_once("nm-applet")
- run_once("blueman-applet")
+run_once("blueman-applet")
 if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
 end
 if lfs.attributes(os.getenv("HOME") .. "/.at_work") then
