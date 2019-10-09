@@ -40,7 +40,7 @@ local function update_volume(value, not_default)
     -- os.execute("amixer -D pulse set Master 5%+")
     for k,v in pairs(sink_tab) do
         if not_default == nil or (not_default ~= nil and  v ~= default_sink) then
-            os.execute("pactl -- set-sink-volume ".. v .." ".. value, false)
+            awful.spawn("pactl -- set-sink-volume ".. v .." ".. value)
         end
     end
     return step
@@ -51,7 +51,7 @@ local function update_mute(state, not_default)
     local val = state
     for k,v in pairs(sink_tab) do
         if not_default == nil or (not_default ~= nil and  v ~= default_sink) then
-            os.execute("pactl -- set-sink-mute ".. v .." ".. val, false)
+            awful.spawn("pactl -- set-sink-mute ".. v .." ".. val)
         end
     end
 end
