@@ -22,7 +22,8 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
-awful.spawn("start-pulseaudio-x11")
+-- Use blocking operation to be sure that pulseaudio is started
+os.execute("start-pulseaudio-x11")
 
 -- Load Debian menu entries
 local debian = require("debian.menu")
