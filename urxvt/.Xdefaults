@@ -20,7 +20,7 @@ URxvt*scrollTtyKeypress: true
 !URxvt*font: xft:Bitstream Vera Sans Mono:style=Regular:pixelsize=11:antialias=false
 URxvt.font: xft:Bitstream Vera Sans Mono:size=9:antialias=false
 !URxvt*font: xft:DejaVu Sans Mono:style=Regular:pixelsize=11:antialias=true
-URxvt.letterSpace:-1
+URxvt.letterSpace:0
 !URxvt.lineSpace:-1
 !Xft.dpi: 96
 Xft.antialias: false
