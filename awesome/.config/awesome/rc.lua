@@ -533,29 +533,29 @@ globalkeys = gears.table.join(
     -- Perso / Custom hotkeys
     awful.key({ modkey,           }, "a", function () awful.client.cycle(true, mouse.screen)  end),
     awful.key({ modkey, "Shift"   }, "a", function () awful.client.cycle(false, mouse.screen)  end),
-    awful.key({ modkey,           }, "d", function () awful.util.spawn("xfce4-appfinder --disable-server") end),
+    awful.key({ modkey,           }, "d", function () awful.spawn("xfce4-appfinder --disable-server") end),
 
     awful.key({ }, "XF86AudioRaiseVolume", function () inc_volume(volume_widget) end),
     awful.key({ }, "XF86AudioLowerVolume", function () dec_volume(volume_widget) end),
     awful.key({ }, "XF86AudioMute", function () mute_volume(volume_widget) end),
-    awful.key({ }, "XF86AudioPrev", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous") end),
-    awful.key({ }, "XF86AudioStop", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop") end),
-    awful.key({ }, "XF86AudioPlay", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
-    awful.key({ }, "XF86AudioNext", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next") end),
-    awful.key({ }, "Print", function () awful.util.spawn("scrot -zu") end),
+    awful.key({ }, "XF86AudioPrev", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous") end),
+    awful.key({ }, "XF86AudioStop", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop") end),
+    awful.key({ }, "XF86AudioPlay", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
+    awful.key({ }, "XF86AudioNext", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next") end),
+    awful.key({ }, "Print", function () awful.spawn("scrot -zu") end),
 
-    awful.key({ modkey, "Shift"   }, "i", function () awful.util.spawn("firefox -P proxy") end),
-    awful.key({ modkey,           }, "i", function () awful.util.spawn("firefox -P default") end),
-    awful.key({ modkey, "Mod1"    }, "i", function () awful.util.spawn("gnome-calculator") end), -- mod + altG
-    awful.key({ modkey,           }, "e", function () awful.util.spawn("thunar") end),
-    --awful.key({ modkey,           }, "e", function () awful.util.spawn("nautilus") end),
-    awful.key({ modkey,           }, "F1", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous") end),
-    awful.key({ modkey,           }, "F2", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
+    awful.key({ modkey, "Shift"   }, "i", function () awful.spawn("firefox -P proxy") end),
+    awful.key({ modkey,           }, "i", function () awful.spawn("firefox -P default") end),
+    awful.key({ modkey, "Mod1"    }, "i", function () awful.spawn("gnome-calculator") end), -- mod + altG
+    awful.key({ modkey,           }, "e", function () awful.spawn("thunar") end),
+    --awful.key({ modkey,           }, "e", function () awful.spawn("nautilus") end),
+    awful.key({ modkey,           }, "F1", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous") end),
+    awful.key({ modkey,           }, "F2", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
 	-- "play" restart the current playing song
-    awful.key({ modkey,           }, "F3", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Play") end),
-    awful.key({ modkey,           }, "F4", function () awful.util.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next") end),
-    --awful.key({ modkey,           }, "F5", function () awful.util.spawn("amixer -D pulse set Master 5%-") end),
-    --awful.key({ modkey,           }, "F6", function () awful.util.spawn("amixer -D pulse set Master 5%+") end),
+    awful.key({ modkey,           }, "F3", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Play") end),
+    awful.key({ modkey,           }, "F4", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next") end),
+    --awful.key({ modkey,           }, "F5", function () awful.spawn("amixer -D pulse set Master 5%-") end),
+    --awful.key({ modkey,           }, "F6", function () awful.spawn("amixer -D pulse set Master 5%+") end),
     awful.key({ modkey,           }, "F5", function () dec_volume(volume_widget) end),
     awful.key({ modkey,           }, "F6", function () inc_volume(volume_widget) end),
     awful.key({ modkey,           }, "F7", function () mute_volume(volume_widget) end), -- toggle mute
@@ -564,8 +564,8 @@ globalkeys = gears.table.join(
     -- suspend notifications
     awful.key({ modkey,           }, "F11", function() naughty.suspend(); naugthy_widget:set_markup("<span color='red'>✘</span>") end),
     awful.key({ modkey,           }, "F12", function() naughty.resume(); naugthy_widget:set_text("") end),
-    awful.key({                   }, "F12", function () awful.util.spawn("xscreensaver-command -lock") end)
-    --awful.key({                   }, "F12", function () awful.util.spawn("gnome-screensaver-command --lock") end)
+    awful.key({                   }, "F12", function () awful.spawn("xscreensaver-command -lock") end)
+    --awful.key({                   }, "F12", function () awful.spawn("gnome-screensaver-command --lock") end)
 
 
 )
