@@ -4,6 +4,7 @@
 
 local awful = require("awful")
 local wibox = require("wibox")
+local gears = require("gears")
 require("autostart")
 
 -- Color constants
@@ -156,7 +157,7 @@ function create_volume_widget()
     refresh_sinks()
     update_widget(volume_widget)
 
-    volume_widget:buttons (awful.util.table.join (
+    volume_widget:buttons (gears.table.join (
           awful.button ({}, 1, function() run_once("pavucontrol") end),
           awful.button ({}, 4, function() inc_volume(volume_widget) end),
           awful.button ({}, 3, function() mute_volume(volume_widget) end),

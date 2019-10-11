@@ -168,7 +168,7 @@ function check_tunnel(widget, script)
 
 end
 
-socks_widget:buttons (awful.util.table.join (
+socks_widget:buttons (gears.table.join (
     awful.button ({}, 1, function() check_tunnel(socks_widget, "socks.sh") end),
     awful.button ({}, 3, function() check_tunnel(socks_widget, "socks.sh") end)
 ))
