@@ -409,6 +409,12 @@ awful.screen.connect_for_each_screen(function(s)
 	    socks_widget,
 	    memwidget2,
 	    memwidget,
+	    wibox.widget {
+	        widget = wibox.widget.separator,
+	        orientation = "vertical",
+	        forced_width = 1,
+	        color = beautiful.bg_normal,
+	    },
 	    cpuwidget,
 	    batterywidget,
             wibox.widget.systray(),
