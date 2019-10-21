@@ -195,7 +195,7 @@ local memwidget = wibox.widget {
 	widget = wibox.widget.graph,
 }
 vicious.cache(vicious.widgets.mem)
-vicious.register(memwidget2, vicious.widgets.mem, "RAM:$1% ", 5)
+vicious.register(memwidget2, vicious.widgets.mem, "RAM:$1% ")
 vicious.register(memwidget, vicious.widgets.mem, "$1")
 
 -- Initialize widget CPU
@@ -300,7 +300,7 @@ function(widget,args)
 	end
 	return '| ⇵ No network '
 end
-, 2)
+)
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
