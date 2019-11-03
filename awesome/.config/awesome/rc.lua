@@ -267,6 +267,7 @@ vicious.register(mytextclock, vicious.widgets.date, " %a %b %d, %R")
 eths = {}
 function update_eths()
 	-- https://unix.stackexchange.com/questions/270008/retrieve-name-of-the-active-network-interface-only
+	eths = {}  -- reset tab to avoid double wifi interface
 	awful.spawn.easy_async_with_shell("LANG=C ip addr show | awk '/inet.*(brd|peer)/{print $NF}'", function(stdout)
 	    local i = 1 -- However, it is customary in Lua to start arrays with index 1 http://www.lua.org/pil/11.1.html
 		for line in stdout:gmatch"(.-)\n" do
