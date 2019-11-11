@@ -146,6 +146,11 @@ local socks_widget = wibox.widget {
 	widget = wibox.widget.textbox,
 }
 
+local tethering_widget = wibox.widget {
+	text = "tethering status |",
+	widget = wibox.widget.textbox,
+}
+
 function check_tunnel(widget, script)
     -- remove extension
     -- http://codereview.stackexchange.com/questions/90177/get-file-name-with-extension-and-get-only-extension
@@ -158,12 +163,12 @@ function check_tunnel(widget, script)
 
 	awful.spawn.easy_async(script .. " status", function(stdout)
 		if string.match(stdout, "inactive") then
-			socks_status = "<span color='red'>✘</span>"
+			status = "<span color='red'>✘</span>"
 		else
-			socks_status = "<span color='green'>✔</span>"
+			status = "<span color='green'>✔</span>"
 		end
 
-        socks_widget:set_markup("| "..script_no_ext.." "..socks_status.." | ")
+        widget:set_markup("| "..script_no_ext.." "..status)
 	end)
 
 end
@@ -172,15 +177,21 @@ socks_widget:buttons (gears.table.join (
     awful.button ({}, 1, function() check_tunnel(socks_widget, "socks.sh") end),
     awful.button ({}, 3, function() check_tunnel(socks_widget, "socks.sh") end)
 ))
+tethering_widget:buttons (gears.table.join (
+    awful.button ({}, 1, function() check_tunnel(tethering_widget, "tethering.sh") end),
+    awful.button ({}, 3, function() check_tunnel(tethering_widget, "tethering.sh") end)
+))
 -- show the good status immediatly
-gears.timer {
-    timeout   = 15,
-    call_now  = true,
-    autostart = true,
-    callback  = function()
-		 check_tunnel(socks_widget, "socks.sh")
-    end
-}
+-- IMPOSSIBLE because without argument in the callback both widgets are "tethering"
+--gears.timer {
+--    timeout   = 15,
+--    call_now  = true,
+--    autostart = true,
+--    callback  = function()
+--		 check_tunnel(socks_widget, "socks.sh")
+--		 check_tunnel(tethering_widget, "tethering.sh")
+--    end
+--}
 
 -- Initialize widget RAM
 local memwidget2 = wibox.widget {
@@ -408,6 +419,7 @@ awful.screen.connect_for_each_screen(function(s)
         tempwidget,
         netwidget,
 	    socks_widget,
+	    tethering_widget,
 	    memwidget2,
 	    memwidget,
 	    wibox.widget {
