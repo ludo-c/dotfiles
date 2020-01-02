@@ -141,15 +141,15 @@ volume_widget = create_volume_widget()
 local naugthy_widget = wibox.widget.textbox()
 
 -- proxy socks status
-local socks_widget = wibox.widget {
-	text = "socks status |",
-	widget = wibox.widget.textbox,
-}
-
-local tethering_widget = wibox.widget {
-	text = "tethering status |",
-	widget = wibox.widget.textbox,
-}
+--local socks_widget = wibox.widget {
+--	text = "socks status |",
+--	widget = wibox.widget.textbox,
+--}
+--
+--local tethering_widget = wibox.widget {
+--	text = "tethering status |",
+--	widget = wibox.widget.textbox,
+--}
 
 function check_tunnel(widget, script)
     -- remove extension
@@ -173,14 +173,14 @@ function check_tunnel(widget, script)
 
 end
 
-socks_widget:buttons (gears.table.join (
-    awful.button ({}, 1, function() check_tunnel(socks_widget, "socks.sh") end),
-    awful.button ({}, 3, function() check_tunnel(socks_widget, "socks.sh") end)
-))
-tethering_widget:buttons (gears.table.join (
-    awful.button ({}, 1, function() check_tunnel(tethering_widget, "tethering.sh") end),
-    awful.button ({}, 3, function() check_tunnel(tethering_widget, "tethering.sh") end)
-))
+--socks_widget:buttons (gears.table.join (
+--    awful.button ({}, 1, function() check_tunnel(socks_widget, "socks.sh") end),
+--    awful.button ({}, 3, function() check_tunnel(socks_widget, "socks.sh") end)
+--))
+--tethering_widget:buttons (gears.table.join (
+--    awful.button ({}, 1, function() check_tunnel(tethering_widget, "tethering.sh") end),
+--    awful.button ({}, 3, function() check_tunnel(tethering_widget, "tethering.sh") end)
+--))
 -- show the good status immediatly
 -- IMPOSSIBLE because without argument in the callback both widgets are "tethering"
 --gears.timer {
@@ -418,8 +418,8 @@ awful.screen.connect_for_each_screen(function(s)
             --mykeyboardlayout,
         tempwidget,
         netwidget,
-	    socks_widget,
-	    tethering_widget,
+	    --socks_widget,
+	    --tethering_widget,
 	    memwidget2,
 	    memwidget,
 	    wibox.widget {
