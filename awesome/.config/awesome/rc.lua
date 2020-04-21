@@ -32,6 +32,11 @@ local has_fdo, freedesktop = pcall(require, "freedesktop")
 -- Get notifications on screen 1 (left one)
 naughty.config.defaults.screen = 1
 
+-- Limit size of notification icons
+beautiful.notification_icon_size = 50 -- seems ko
+beautiful.notification_max_height = 50 -- seems ko
+naughty.config.defaults['icon_size'] = 50 -- works
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
