@@ -567,6 +567,7 @@ globalkeys = gears.table.join(
     awful.key({ }, "XF86AudioPlay", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
     awful.key({ }, "XF86AudioNext", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next") end),
     awful.key({ }, "Print", function () awful.spawn("scrot -zu") end),
+    awful.key({ modkey }, "Print", function () awful.spawn("flameshot gui") end),
 
     awful.key({ modkey, "Shift"   }, "i", function () awful.spawn("firefox -P proxy") end),
     awful.key({ modkey,           }, "i", function () awful.spawn("firefox -P default") end),
@@ -840,6 +841,7 @@ run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader --focus
 --run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader --invert-color-include 'g:e:Eclipse'")
 run_once("nm-applet")
 run_once("blueman-applet")
+run_once("flameshot")
 if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
 end
 if lfs.attributes(os.getenv("HOME") .. "/.at_work") then
