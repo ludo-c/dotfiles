@@ -842,6 +842,10 @@ run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader --focus
 run_once("nm-applet")
 run_once("blueman-applet")
 run_once("flameshot")
+-- arandr can save this configuration in this file. If it exists, run it
+if lfs.attributes(os.getenv("HOME") .. "/.screenlayout/layout.sh") then
+	run_once(os.getenv("HOME") .. "/.screenlayout/layout.sh")
+end
 if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
 end
 if lfs.attributes(os.getenv("HOME") .. "/.at_work") then
