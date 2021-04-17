@@ -836,7 +836,8 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 run_once("xscreensaver -no-splash")
-run_once("redshift-gtk")
+--run_once("redshift-gtk -l 43.2:5.28") -- allauch
+run_once2({"redshift-gtk -l 43.2:5.28"})
 run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader --focus-exclude \"name ~= 'Eclipse'\"")
 --run_once("compton -b --inactive-dim 0.3 --sw-opti --detect-client-leader --invert-color-include 'g:e:Eclipse'")
 run_once("nm-applet")

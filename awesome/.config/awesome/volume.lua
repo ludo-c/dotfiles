@@ -26,7 +26,7 @@ local function get_volume() -- returns the volume as a float (1.0 = 100%)
     local fd = io.popen("LANG=C pacmd dump-volumes | grep 'Sink "..default_sink.."' | grep -o '...%' | sed 's/[^0-9]*//g'")
     local volume_str = fd:read() -- take only the first line (replace a '| head -n 1')
     fd:close()
-    return tonumber(volume_str) / 100
+    return tonumber(volume_str)
 end
 
 local function get_mute() -- returns a true value if muted or a false value if not
@@ -75,8 +75,9 @@ local function refresh_sinks()
     fd:close()
 
     -- set same volume everywhere
-    local volume_str = get_volume() * 100
+    local volume_str = get_volume()
     volume_str = volume_str.."%"
+    --dbg({get_volume(),volume_str})
     update_volume(volume_str, true)
 
     -- set same mute state everywhere
@@ -94,7 +95,7 @@ local function update_widget(widget, step)
     local mute
 
     if step == nil then
-        volume = get_volume()
+        volume = get_volume() / 100
         mute = get_mute()
         mute_real = mute
     else

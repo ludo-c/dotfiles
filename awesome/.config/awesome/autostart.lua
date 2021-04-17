@@ -2,6 +2,7 @@
 -- install "lua-filesystem" package (debian and arch)
 local lfs = require("lfs") 
 local awful = require("awful")
+require("utils")
 
 -- {{{ Run programm once
 local function processwalker()
@@ -31,9 +32,23 @@ function run_once(process, cmd)
 
    for p in processwalker() do
       if p:find(process:gsub("[-+?*]", regex_killer)) then
-	 return
+         return
       end
    end
    return awful.spawn(cmd or process)
 end
 -- }}}
+
+
+-- use: run_once2({"program1", "program2"})
+function run_once2(cmd_arr)
+    for _, cmd in ipairs(cmd_arr) do
+        findme = cmd
+        firstspace = cmd:find(" ")
+        if firstspace then
+            findme = cmd:sub(0, firstspace-1)
+        end
+        awful.spawn.with_shell(string.format("pgrep -u $USER -x %s > /dev/null || (%s)", findme, 
+cmd))
+    end
+end
