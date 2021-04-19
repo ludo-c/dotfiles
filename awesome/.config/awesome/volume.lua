@@ -2,6 +2,25 @@
 -- Copied/adapted from https://awesome.naquadah.org/wiki/Davids_volume_widget
 ---------------------------------
 
+--
+-- useful commands
+--
+-- change input volume (mic) :
+--   pactl list sources
+--   pactl list short sources
+--   pacmd set-source-volume <index> <volume>
+-- change output volume (headphones) :
+--   pactl list sinks
+--   pactl list short sinks
+--   pacmd set-sink-volume <index> <volume>
+-- change application volume:
+--   pactl list sink-inputs
+--   pactl list short sink-inputs
+--   pactl set-sink-input-volume [sink number] [volume percent]
+--
+
+-- WARNING: sink-inputs are not at 100% when created (don't know why)
+
 local awful = require("awful")
 local wibox = require("wibox")
 local gears = require("gears")
