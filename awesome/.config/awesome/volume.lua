@@ -21,7 +21,7 @@ local volume_step = 3 -- in percentage
 local mute_real = nil
 
 -- Functions to fetch volume information (pulseaudio)
-local function get_volume() -- returns the volume as a float (1.0 = 100%)
+local function get_volume() -- returns the volume as int (100 = 100%)
     -- 'pacmd dump-volumes' is faster than 'patcl list sinks'
     local fd = io.popen("LANG=C pacmd dump-volumes | grep 'Sink "..default_sink.."' | grep -o '...%' | sed 's/[^0-9]*//g'")
     local volume_str = fd:read() -- take only the first line (replace a '| head -n 1')
@@ -41,6 +41,7 @@ local function update_volume(value, not_default)
     -- os.execute("amixer -D pulse set Master 5%+")
     for k,v in pairs(sink_tab) do
         if not_default == nil or (not_default ~= nil and  v ~= default_sink) then
+            --dbg({v})
             awful.spawn("pactl -- set-sink-volume ".. v .." ".. value)
         end
     end
@@ -62,7 +63,7 @@ local function refresh_sinks()
 
     -- Get the default sink index. https://wiki.archlinux.org/index.php/PulseAudio/Examples
     local fd = io.popen("LANG=C pacmd list-sinks | grep '* index' | awk '{print $3}'")
-    default_sink = tonumber(fd:read())
+    default_sink = tonumber(fd:read()) -- take only the first line (replace a '| head -n 1')
     fd:close()
     -- Get all sinks indexes
     local fd = io.popen("LANG=C pacmd list-sinks | grep index | grep -o '[0-9]*'")
@@ -78,7 +79,8 @@ local function refresh_sinks()
     local volume_str = get_volume()
     volume_str = volume_str.."%"
     --dbg({get_volume(),volume_str})
-    update_volume(volume_str, true)
+    -- do not ignore default sink as left and right can have different volume
+    update_volume(volume_str, nil)
 
     -- set same mute state everywhere
     if get_mute() then
@@ -125,13 +127,13 @@ end
 -- Volume control functions for external use
 function inc_volume(widget)
     local value = "+".. volume_step
-    update_volume(value .."%")
+    update_volume(value .."%", nil)
     update_widget(widget, value)
 end
 
 function dec_volume(widget)
     local value = "-".. volume_step
-    update_volume(value .."%")
+    update_volume(value .."%", nil)
     update_widget(widget, value)
 end
 
