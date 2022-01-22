@@ -6,6 +6,11 @@ require("utils")
 local vicious = require("vicious")
 require("volume")
 
+-- clone https://github.com/streetturtle/awesome-wm-widgets.git in this directory
+local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
+local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
+local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -435,10 +440,24 @@ awful.screen.connect_for_each_screen(function(s)
 	    },
 	    cpuwidget,
 	    batterywidget,
+	    batteryarc_widget( {
+                show_current_level = true,
+                arc_thickness = 1,
+            }),
+	    brightness_widget {
+                type = 'arc',
+                program = 'brightnessctl',
+                step = 2,
+                tooltip = true,
+            },
             wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox,
 	    naugthy_widget,
+	    logout_menu_widget {
+                font = 'Play 14',
+                onlock = function() awful.spawn.with_shell('xscreensaver-command -lock') end,
+            },
 	    volume_widget,
         },
     }
@@ -559,6 +578,8 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "a", function () awful.client.cycle(false, mouse.screen)  end),
     awful.key({ modkey,           }, "d", function () awful.spawn("xfce4-appfinder --disable-server") end),
 
+    awful.key({ }, "XF86MonBrightnessUp",  function () brightness_widget:inc() end, {description = "increase brightness", group = "custom"}),
+    awful.key({ }, "XF86MonBrightnessDown",  function () brightness_widget:dec() end, {description = "increase brightness", group = "custom"}),
     awful.key({ }, "XF86AudioRaiseVolume", function () inc_volume(volume_widget) end),
     awful.key({ }, "XF86AudioLowerVolume", function () dec_volume(volume_widget) end),
     awful.key({ }, "XF86AudioMute", function () mute_volume(volume_widget) end),
