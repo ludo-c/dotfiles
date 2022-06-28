@@ -86,7 +86,6 @@ modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    --awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
@@ -99,6 +98,7 @@ awful.layout.layouts = {
     --awful.layout.suit.max.fullscreen,
     awful.layout.suit.magnifier,
     awful.layout.suit.corner.nw,
+    awful.layout.suit.floating,
     -- awful.layout.suit.corner.ne,
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
@@ -593,8 +593,8 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "i", function () awful.spawn("firefox -P proxy") end),
     awful.key({ modkey,           }, "i", function () awful.spawn("firefox -P default") end),
     awful.key({ modkey, "Mod1"    }, "i", function () awful.spawn("gnome-calculator") end), -- mod + altG
-    awful.key({ modkey,           }, "e", function () awful.spawn("thunar") end),
-    --awful.key({ modkey,           }, "e", function () awful.spawn("nautilus") end),
+    --awful.key({ modkey,           }, "e", function () awful.spawn("thunar") end),
+    awful.key({ modkey,           }, "e", function () awful.spawn("nautilus --no-desktop") end),
     awful.key({ modkey,           }, "F1", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous") end),
     awful.key({ modkey,           }, "F2", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
 	-- "play" restart the current playing song
