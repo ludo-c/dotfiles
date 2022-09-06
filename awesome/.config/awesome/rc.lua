@@ -229,32 +229,32 @@ local cpuwidget = wibox.widget {
 }
 vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
 
-batterywidget = wibox.widget.textbox()
--- http://askubuntu.com/questions/611350/need-battery-applet-for-awesome-wm-and-ubuntu-14-04
-function battery_status(widget)
-    fh = assert(io.popen("acpi -b | grep -o '...%' | tr -d ',%'", "r"))
-    if tonumber(fh:read("*l")) < 15 then
-        bat_color = 'red'
-    else
-        bat_color = 'grey'
-    end
-    fh:close()
-    fh = assert(io.popen("acpi | cut -d, -f 2,3 - | sed -e 's/[a-z.,-]//g' -e 's/ *$//g' -e 's/^ *//g' -e 's/\\(.*\\):.*/\\1/'", "r"))
-    batterywidget:set_markup("| <span color='"..bat_color.."'>" .. fh:read("*l") .. "</span> | ")
-    fh:close()
-end
-
-if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
-    -- http://askubuntu.com/questions/611350/need-battery-applet-for-awesome-wm-and-ubuntu-14-04
-    gears.timer {
-        timeout   = 15,
-        call_now  = true,
-        autostart = true,
-        callback  = function()
-             battery_status(batterywidget)
-        end
-    }
-end
+--batterywidget = wibox.widget.textbox()
+---- http://askubuntu.com/questions/611350/need-battery-applet-for-awesome-wm-and-ubuntu-14-04
+--function battery_status(widget)
+--    fh = assert(io.popen("acpi -b | grep -o '...%' | tr -d ',%'", "r"))
+--    if tonumber(fh:read("*l")) < 15 then
+--        bat_color = 'red'
+--    else
+--        bat_color = 'grey'
+--    end
+--    fh:close()
+--    fh = assert(io.popen("acpi | cut -d, -f 2,3 - | sed -e 's/[a-z.,-]//g' -e 's/ *$//g' -e 's/^ *//g' -e 's/\\(.*\\):.*/\\1/'", "r"))
+--    batterywidget:set_markup("| <span color='"..bat_color.."'>" .. fh:read("*l") .. "</span> | ")
+--    fh:close()
+--end
+--
+--if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
+--    -- http://askubuntu.com/questions/611350/need-battery-applet-for-awesome-wm-and-ubuntu-14-04
+--    gears.timer {
+--        timeout   = 15,
+--        call_now  = true,
+--        autostart = true,
+--        callback  = function()
+--             battery_status(batterywidget)
+--        end
+--    }
+--end
 
 cmd = [[ bash -c "sensors -u coretemp-isa-0000 | awk '/temp1_input/ { print  }'"]]
 --local tempwidget = awful.widget.watch(cmd, 15)
@@ -439,8 +439,9 @@ awful.screen.connect_for_each_screen(function(s)
 	        color = beautiful.bg_normal,
 	    },
 	    cpuwidget,
-	    batterywidget,
+	    --batterywidget,
 	    batteryarc_widget( {
+		show_notification_mode = off,
                 show_current_level = true,
                 arc_thickness = 1,
             }),
@@ -615,6 +616,22 @@ globalkeys = gears.table.join(
 
 
 )
+
+-- set up keybindings based on existing monitors
+for s in screen do
+  for screen_name, _ in pairs(s.outputs) do
+    if screen_name == "eDP-1" then
+      globalkeys = awful.util.table.join(globalkeys,
+          awful.key({modkey}, "F1", function() awful.screen.focused():swap(s) end))
+    elseif screen_name == "DP-2-1" then
+      globalkeys = awful.util.table.join(globalkeys,
+          awful.key({modkey}, "F2", function() awful.screen.focused():swap(s) end))
+    elseif screen_name == "DP-2-2" then
+      globalkeys = awful.util.table.join(globalkeys,
+          awful.key({modkey}, "F3", function() awful.screen.focused():swap(s) end))
+    end
+  end
+end
 
 clientkeys = gears.table.join(
     awful.key({ modkey,           }, "f",
