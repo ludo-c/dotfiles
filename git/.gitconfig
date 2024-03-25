@@ -1,12 +1,33 @@
+[absorb]
+	maxStack=50 # Or any other reasonable value for your project
+
 [user]
 	name = Ludo
 	email = lchopin+github@gmail.com
+#	name = Ludovic Chopin
+#	email = ludo-c@users.noreply.github.com
+
+# include only if a remote with the given URL exists (note
+# that such a URL may be provided later in a file or in a
+# file read after this file is read, as seen in this example)
+#[includeIf "hasconfig:remote.*.url:gitsrv*"]
+#	path = ~/.gitconfig_wyplay
+#[includeIf "hasconfig:remote.*.url:git@gitlab.wyplay.com"]
+#	path = ~/.gitconfig_wyplay
+
+[includeIf "gitdir:~/workspace/"]
+	path = ~/.gitconfig_wyplay
+
+[includeIf "gitdir:~/opt/wyplay/"]
+	path = ~/.gitconfig_wyplay
+
 [color]
 	status = auto
 	branch = auto
 	diff = auto
 	ui = true
 [alias]
+	f = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
 	ci = commit
 	co = checkout
 	st = status -u
@@ -38,3 +59,7 @@
 [mergetool "kdiff"]
 	cmd = kdiff3 -b $BASE $LOCAL $REMOTE -o $MERGED
 
+[url "git@gitlab.wyplay.com"]
+	insteadOf = "gitsrv"
+[init]
+	defaultBranch = main
