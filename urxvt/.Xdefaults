@@ -87,7 +87,7 @@ URxvt.keysym.Control-Shift-Left: perl:tabbedex:move_tab_left
 URxvt.keysym.Control-Shift-Right: perl:tabbedex:move_tab_right
 
 
-URxvt*saveLines: 10000
+URxvt*saveLines: 100000
 URxvt*scrollstyle:plain
 URxvt*cursorBlink: true
 URxvt*scrollBar_right: true
