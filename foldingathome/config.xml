@@ -1,0 +1,13 @@
+<config>
+  <!-- Slot Control -->
+  <power v='FULL'/>
+  <gpu v='false'/>
+
+  <!-- User Information -->
+  <passkey v='35e11ae28c1faf1c1afca8e661620fe6'/>
+  <team v='51'/>
+  <user v='ludo`'/>
+
+  <!-- Folding Slots -->
+  <slot id='0' type='CPU' />
+</config>
