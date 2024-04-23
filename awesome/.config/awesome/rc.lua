@@ -618,20 +618,20 @@ globalkeys = gears.table.join(
 )
 
 -- set up keybindings based on existing monitors
-for s in screen do
-  for screen_name, _ in pairs(s.outputs) do
-    if screen_name == "eDP-1" then
-      globalkeys = awful.util.table.join(globalkeys,
-          awful.key({modkey}, "F1", function() awful.screen.focused():swap(s) end))
-    elseif screen_name == "DP-2-1" then
-      globalkeys = awful.util.table.join(globalkeys,
-          awful.key({modkey}, "F2", function() awful.screen.focused():swap(s) end))
-    elseif screen_name == "DP-2-2" then
-      globalkeys = awful.util.table.join(globalkeys,
-          awful.key({modkey}, "F3", function() awful.screen.focused():swap(s) end))
-    end
-  end
-end
+--for s in screen do
+--  for screen_name, _ in pairs(s.outputs) do
+--    if screen_name == "eDP-1" then
+--      globalkeys = awful.util.table.join(globalkeys,
+--          awful.key({modkey}, "F1", function() awful.screen.focused():swap(s) end))
+--    elseif screen_name == "DP-2-1" then
+--      globalkeys = awful.util.table.join(globalkeys,
+--          awful.key({modkey}, "F2", function() awful.screen.focused():swap(s) end))
+--    elseif screen_name == "DP-2-2" then
+--      globalkeys = awful.util.table.join(globalkeys,
+--          awful.key({modkey}, "F3", function() awful.screen.focused():swap(s) end))
+--    end
+--  end
+--end
 
 clientkeys = gears.table.join(
     awful.key({ modkey,           }, "f",
