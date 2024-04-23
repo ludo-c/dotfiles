@@ -6,4 +6,4 @@
 	url = https://github.com/mina86/urxvt-tabbedex.git
 [submodule "zsh/.zprezto"]
 	path = zsh/.zprezto
-	url = https://github.com/ludo-c/prezto.git
+	url = git@github.com:ludo-c/prezto.git
