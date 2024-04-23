@@ -7,3 +7,6 @@
 [submodule "zsh/.zprezto"]
 	path = zsh/.zprezto
 	url = git@github.com:ludo-c/prezto.git
+[submodule "awesome/.config/awesome/awesome-wm-widgets"]
+	path = awesome/.config/awesome/awesome-wm-widgets
+	url = https://github.com/streetturtle/awesome-wm-widgets.git
