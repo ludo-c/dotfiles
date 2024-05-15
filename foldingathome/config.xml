@@ -1,6 +1,6 @@
 <config>
   <!-- Slot Control -->
-  <power v='FULL'/>
+  <power v='MEDIUM'/>
   <gpu v='false'/>
 
   <!-- User Information -->
