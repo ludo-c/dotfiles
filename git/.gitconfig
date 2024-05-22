@@ -18,6 +18,9 @@
 [includeIf "gitdir:~/workspace/"]
 	path = ~/.gitconfig_wyplay
 
+[includeIf "gitdir:~/ratafia/"]
+	path = ~/.gitconfig_wyplay
+
 [includeIf "gitdir:~/opt/wyplay/"]
 	path = ~/.gitconfig_wyplay
 
