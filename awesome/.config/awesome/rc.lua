@@ -229,6 +229,35 @@ local cpuwidget = wibox.widget {
 }
 vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
 
+tailscale_daemon_widget = wibox.widget.textbox()
+tailscale_widget = wibox.widget.textbox()
+
+function tailscale_status(widget)
+	awful.spawn.easy_async("systemctl status tailscaled.service", function(out, err, reason, rc)
+		if rc == 0 then
+			tailscale_daemon_widget:set_markup(" | tailscale: <span color='#CC9933'>✔</span> ")
+		else
+			tailscale_daemon_widget:set_markup(" | tailscale: ✘ ")
+		end
+	end)
+	awful.spawn.easy_async("tailscale status", function(out, err, reason, rc)
+		if rc == 0 then
+			tailscale_widget:set_markup("<span color='#CC9933'>✔</span> ")
+		else
+			tailscale_widget:set_markup("✘ ")
+		end
+	end)
+end
+
+gears.timer {
+    timeout   = 10,
+    call_now  = true,
+    autostart = true,
+    callback  = function()
+         tailscale_status(tailscalewidget)
+    end
+}
+
 --batterywidget = wibox.widget.textbox()
 ---- http://askubuntu.com/questions/611350/need-battery-applet-for-awesome-wm-and-ubuntu-14-04
 --function battery_status(widget)
@@ -430,6 +459,8 @@ awful.screen.connect_for_each_screen(function(s)
         netwidget,
 	    --socks_widget,
 	    --tethering_widget,
+	    tailscale_daemon_widget,
+	    tailscale_widget,
 	    memwidget2,
 	    memwidget,
 	    wibox.widget {
