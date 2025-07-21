@@ -251,7 +251,7 @@ function tailscale_status(widget)
 end
 
 gears.timer {
-    timeout   = 60,
+    timeout   = 10,
     call_now  = true,
     autostart = true,
     callback  = function()
