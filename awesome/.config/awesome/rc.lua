@@ -236,14 +236,15 @@ function tailscale_status(widget)
 	awful.spawn.easy_async("systemctl status tailscaled.service", function(out, err, reason, rc)
 		if rc == 0 then
 			tailscale_daemon_widget:set_markup(" | tailscale: <span color='#CC9933'>✔</span> ")
+			awful.spawn.easy_async("tailscale status", function(out, err, reason, rc)
+				if rc == 0 then
+					tailscale_widget:set_markup("<span color='#CC9933'>up</span> ")
+				else
+					tailscale_widget:set_markup("✘ ")
+				end
+			end)
 		else
 			tailscale_daemon_widget:set_markup(" | tailscale: ✘ ")
-		end
-	end)
-	awful.spawn.easy_async("tailscale status", function(out, err, reason, rc)
-		if rc == 0 then
-			tailscale_widget:set_markup("<span color='#CC9933'>✔</span> ")
-		else
 			tailscale_widget:set_markup("✘ ")
 		end
 	end)
