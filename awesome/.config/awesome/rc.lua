@@ -231,6 +231,7 @@ vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
 
 tailscale_daemon_widget = wibox.widget.textbox()
 tailscale_widget = wibox.widget.textbox()
+tailscale_exit_node = wibox.widget.textbox()
 
 function tailscale_status(widget)
 	awful.spawn.easy_async("systemctl status tailscaled.service", function(out, err, reason, rc)
@@ -243,9 +244,17 @@ function tailscale_status(widget)
 					tailscale_widget:set_markup("✘ ")
 				end
 			end)
+			awful.spawn.easy_async_with_shell("tailscale exit-node list | grep -i selected", function(out, err, reason, rc)
+				if rc == 0 then
+					tailscale_exit_node:set_markup("<span color='#CC9933'>exit</span> ")
+				else
+					tailscale_exit_node:set_markup("")
+				end
+			end)
 		else
 			tailscale_daemon_widget:set_markup(" | tailscale: ✘ ")
-			tailscale_widget:set_markup("✘ ")
+			tailscale_widget:set_markup("")
+			tailscale_exit_node:set_markup("")
 		end
 	end)
 end
@@ -462,6 +471,7 @@ awful.screen.connect_for_each_screen(function(s)
 	    --tethering_widget,
 	    tailscale_daemon_widget,
 	    tailscale_widget,
+	    tailscale_exit_node,
 	    memwidget2,
 	    memwidget,
 	    wibox.widget {
