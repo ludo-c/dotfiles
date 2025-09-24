@@ -11,6 +11,9 @@ local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightne
 local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
 local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
 
+-- Keyboard map indicator and switcher
+local keyboard_layout = require("keyboard_layout")
+
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -146,6 +149,21 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- Volume widget
 volume_widget = create_volume_widget()
+
+-- Keybloard widget
+kbd_widget = wibox.widget.textclock()
+
+-- Create keyboard layout text label
+local kbdcfg = keyboard_layout.kbdcfg({cmd = "setxkbmap", type = "tui"})
+kbdcfg.add_primary_layout("Français", "FR", "fr")
+kbdcfg.add_primary_layout("Français Mac", "MAC", "\"fr mac\"")
+kbdcfg.bind()
+
+-- Mouse bindings keyboard layout
+kbdcfg.widget:buttons(
+ awful.util.table.join(awful.button({ }, 1, function () kbdcfg.switch_next() end),
+                       awful.button({ }, 3, function () kbdcfg.menu:toggle() end))
+)
 
 -- naugthy notification indicator
 local naugthy_widget = wibox.widget.textbox()
@@ -496,6 +514,7 @@ awful.screen.connect_for_each_screen(function(s)
             wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox,
+            kbdcfg.widget,
 	    naugthy_widget,
 	    logout_menu_widget {
                 font = 'Play 14',
