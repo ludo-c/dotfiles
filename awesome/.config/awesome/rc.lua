@@ -639,6 +639,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "a", function () awful.client.cycle(true, mouse.screen)  end),
     awful.key({ modkey, "Shift"   }, "a", function () awful.client.cycle(false, mouse.screen)  end),
     awful.key({ modkey,           }, "d", function () awful.spawn("xfce4-appfinder --disable-server") end),
+    -- awful.key({ modkey,           }, "space", function () awful.spawn("xfce4-appfinder --disable-server") end),
 
     awful.key({ }, "XF86MonBrightnessUp",  function () brightness_widget:inc() end, {description = "increase brightness", group = "custom"}),
     awful.key({ }, "XF86MonBrightnessDown",  function () brightness_widget:dec() end, {description = "increase brightness", group = "custom"}),
@@ -655,8 +656,8 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "i", function () awful.spawn("firefox -P proxy") end),
     awful.key({ modkey,           }, "i", function () awful.spawn("firefox -P default") end),
     awful.key({ modkey, "Mod1"    }, "i", function () awful.spawn("gnome-calculator") end), -- mod + altG
-    --awful.key({ modkey,           }, "e", function () awful.spawn("thunar") end),
-    awful.key({ modkey,           }, "e", function () awful.spawn("nautilus --no-desktop") end),
+    awful.key({ modkey,           }, "e", function () awful.spawn("thunar") end),
+    --awful.key({ modkey,           }, "e", function () awful.spawn("nautilus --no-desktop") end),
     awful.key({ modkey,           }, "F1", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous") end),
     awful.key({ modkey,           }, "F2", function () awful.spawn("qdbus org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
 	-- "play" restart the current playing song
