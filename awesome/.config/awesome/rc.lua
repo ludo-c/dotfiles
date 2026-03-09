@@ -641,6 +641,9 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "d", function () awful.spawn("xfce4-appfinder --disable-server") end),
     -- awful.key({ modkey,           }, "space", function () awful.spawn("xfce4-appfinder --disable-server") end),
 
+    -- test keys with 'xev'
+    -- list all keys with 'xmodmap -pke'
+    -- https://stackoverflow.com/questions/10774582/what-is-the-name-of-fn-key-for-awesome-wm
     awful.key({ }, "XF86MonBrightnessUp",  function () brightness_widget:inc() end, {description = "increase brightness", group = "custom"}),
     awful.key({ }, "XF86MonBrightnessDown",  function () brightness_widget:dec() end, {description = "increase brightness", group = "custom"}),
     awful.key({ }, "XF86AudioRaiseVolume", function () inc_volume(volume_widget) end),
@@ -650,6 +653,12 @@ globalkeys = gears.table.join(
     awful.key({ }, "XF86AudioStop", function () awful.spawn("qdbus org.mpris.MediaPlayer2.strawberry /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop") end),
     awful.key({ }, "XF86AudioPlay", function () awful.spawn("qdbus org.mpris.MediaPlayer2.strawberry /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
     awful.key({ }, "XF86AudioNext", function () awful.spawn("qdbus org.mpris.MediaPlayer2.strawberry /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next") end),
+    awful.key({ }, "XF86Calculator", function () awful.spawn("gnome-calculator") end),
+    awful.key({ }, "XF86Explorer", function () awful.spawn("nautilus --no-desktop") end),
+    awful.key({ }, "XF86HomePage", function () awful.spawn("chromium-browser") end),
+    awful.key({ }, "XF86Mail", function () awful.spawn("") end),
+    awful.key({ }, "XF86Tools", function () awful.spawn("flatpak run org.strawberrymusicplayer.strawberry") end),
+
     awful.key({ }, "Print", function () awful.spawn("scrot -zu") end),
     awful.key({ modkey }, "Print", function () awful.spawn("flameshot gui") end),
 
