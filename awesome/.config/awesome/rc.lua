@@ -667,10 +667,11 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Mod1"    }, "i", function () awful.spawn("gnome-calculator") end), -- mod + altG
     awful.key({ modkey,           }, "e", function () awful.spawn("thunar") end),
     --awful.key({ modkey,           }, "e", function () awful.spawn("nautilus --no-desktop") end),
+    -- see all functions with qdbusviewer
     awful.key({ modkey,           }, "F1", function () awful.spawn("qdbus org.mpris.MediaPlayer2.strawberry /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous") end),
     awful.key({ modkey,           }, "F2", function () awful.spawn("qdbus org.mpris.MediaPlayer2.strawberry /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
 	-- "play" restart the current playing song
-    awful.key({ modkey,           }, "F3", function () awful.spawn("qdbus org.mpris.MediaPlayer2.strawberry /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Play") end),
+    awful.key({ modkey,           }, "F3", function () awful.spawn("qdbus org.mpris.MediaPlayer2.strawberry /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Seek -99999999999999999") end),
     awful.key({ modkey,           }, "F4", function () awful.spawn("qdbus org.mpris.MediaPlayer2.strawberry /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next") end),
     --awful.key({ modkey,           }, "F5", function () awful.spawn("amixer -D pulse set Master 5%-") end),
     --awful.key({ modkey,           }, "F6", function () awful.spawn("amixer -D pulse set Master 5%+") end),
