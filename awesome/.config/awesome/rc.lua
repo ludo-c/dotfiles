@@ -960,6 +960,6 @@ if lfs.attributes(os.getenv("HOME") .. "/.screenlayout/layout.sh") then
 end
 if lfs.attributes(os.getenv("HOME") .. "/.laptop") then
 end
-if lfs.attributes(os.getenv("HOME") .. "/.at_work") then
-	run_once2({"hqtray"})
-end
+--if lfs.attributes(os.getenv("HOME") .. "/.at_work") then
+--	run_once2({"hqtray"})
+--end
