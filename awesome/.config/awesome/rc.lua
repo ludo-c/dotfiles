@@ -31,7 +31,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 
 -- Use blocking operation to be sure that pulseaudio is started
-os.execute("start-pulseaudio-x11")
+-- os.execute("start-pulseaudio-x11")
 
 -- Load Debian menu entries
 local debian = require("debian.menu")

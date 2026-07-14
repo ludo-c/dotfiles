@@ -41,18 +41,23 @@ local mute_real = nil
 
 -- Functions to fetch volume information (pulseaudio)
 local function get_volume() -- returns the volume as int (100 = 100%)
-    -- 'pacmd dump-volumes' is faster than 'patcl list sinks'
-    local fd = io.popen("LANG=C pacmd dump-volumes | grep 'Sink "..default_sink.."' | grep -o '...%' | sed 's/[^0-9]*//g'")
-    local volume_str = fd:read() -- take only the first line (replace a '| head -n 1')
+    local fd = io.popen("LANG=C pactl get-sink-volume @DEFAULT_SINK@")
+    local line = fd:read("*l")
     fd:close()
-    return tonumber(volume_str)
+
+    if not line then
+        return 0
+    end
+
+    return tonumber(line:match("(%d+)%%")) or 0
 end
 
 local function get_mute() -- returns a true value if muted or a false value if not
-    fd = io.popen("LANG=C pactl list sinks | grep -A 9001 'Sink #".. default_sink .."' | grep Mute")
-    local mute_str = fd:read()
+    local fd = io.popen("LANG=C pactl get-sink-mute @DEFAULT_SINK@")
+    local line = fd:read("*l")
     fd:close()
-    return string.find(mute_str, "yes")
+
+    return line and line:find("yes") ~= nil
 end
 
 local function update_volume(value, not_default)
@@ -80,34 +85,42 @@ end
 local function refresh_sinks()
     -- call it BEFORE update_widget
 
-    -- Get the default sink index. https://wiki.archlinux.org/index.php/PulseAudio/Examples
-    local fd = io.popen("LANG=C pacmd list-sinks | grep '* index' | awk '{print $3}'")
-    default_sink = tonumber(fd:read()) -- take only the first line (replace a '| head -n 1')
+    sink_tab = {}
+    default_sink = nil
+
+    -- Nom du sink par défaut
+    local fd = io.popen("LANG=C pactl get-default-sink")
+    local default_name = fd:read("*l")
     fd:close()
-    -- Get all sinks indexes
-    local fd = io.popen("LANG=C pacmd list-sinks | grep index | grep -o '[0-9]*'")
-    sink_tab = {} -- reset tab
-    local i = 1 -- However, it is customary in Lua to start arrays with index 1 http://www.lua.org/pil/11.1.html
+
+    -- Liste des sinks
+    fd = io.popen("LANG=C pactl list short sinks")
+
     for line in fd:lines() do
-        sink_tab[i] = tonumber(line)
-        i = i + 1
+        local id, name = line:match("^(%d+)%s+(%S+)")
+
+        if id then
+            id = tonumber(id)
+            table.insert(sink_tab, id)
+
+            if name == default_name then
+                default_sink = id
+            end
+        end
     end
+
     fd:close()
 
-    -- set same volume everywhere
-    local volume_str = get_volume()
-    volume_str = volume_str.."%"
-    --dbg({get_volume(),volume_str})
-    -- do not ignore default sink as left and right can have different volume
-    update_volume(volume_str, nil)
+    -- Synchronise les volumes
+    local volume = tostring(get_volume()) .. "%"
+    update_volume(volume)
 
-    -- set same mute state everywhere
+    -- Synchronise le mute
     if get_mute() then
         update_mute("yes", true)
     else
         update_mute("no", true)
     end
-
 end
 
 -- Updates the volume widget's display
@@ -193,4 +206,3 @@ function create_volume_widget()
 
     return volume_widget
 end
-
